@@ -228,20 +228,22 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <div className="mt-12 grid gap-5 md:grid-cols-2">
             <TrackCard
               icon={<Code2 size={22} />}
               title="Data Structures & Algorithms"
-              description="Build deep problem-solving skills from Big-O to graph theory and dynamic programming."
+              description="Build deep computational problem-solving intuition from Big-O foundations to dynamic programming and graph theory."
+              href="/learn/dsa"
+              totalNodes={44}
               available
             />
             <TrackCard
-              title="Frontend Engineering"
-              description="Master modern web interfaces, React, Next.js, state machines, and high-performance frontend architecture."
-            />
-            <TrackCard
-              title="Backend Engineering"
-              description="Build scalable APIs, distributed services, message queues, and resilient production backend systems."
+              icon={<BrainCircuit size={22} />}
+              title="Cybersecurity Engineering"
+              description="Master defensive security across networking, Linux/Windows internals, web security (OWASP), and hands-on SOC operations."
+              href="/learn/cybersecurity"
+              totalNodes={36}
+              available
             />
           </div>
         </div>
@@ -251,7 +253,7 @@ export default function HomePage() {
       <section className="px-5 py-28 text-center relative">
         <div className="mx-auto max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#ff6a00]">
-            Your Personalized Path Starts Here
+            Your Adaptive Learning Journey Starts Here
           </p>
 
           <h2 className="mt-4 text-4xl font-bold tracking-[-.04em] sm:text-6xl">
@@ -261,22 +263,29 @@ export default function HomePage() {
           </h2>
 
           <p className="mx-auto mt-6 max-w-xl text-white/45 text-sm sm:text-base leading-7">
-            Start with our diagnostic assessment and let Techla.labs.learn map your exact path through software engineering mastery.
+            Start with our 20-mark diagnostic assessment and let Techla.labs.learn map your exact path through prerequisite knowledge graphs.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/learn/dsa/diagnostic"
-              className="inline-flex items-center gap-2 rounded-full bg-[#ff6a00] px-8 py-3.5 text-sm font-bold text-black transition hover:bg-[#ff7a1a] shadow-[0_0_30px_rgba(255,106,0,0.3)]"
+              className="inline-flex items-center gap-2 rounded-full bg-[#ff6a00] px-7 py-3.5 text-sm font-bold text-black transition hover:bg-[#ff7a1a] shadow-[0_0_30px_rgba(255,106,0,0.3)]"
             >
-              Take DSA Diagnostic
+              DSA Diagnostic (20 Marks)
+              <ArrowRight size={16} />
+            </Link>
+            <Link
+              href="/learn/cybersecurity/diagnostic"
+              className="inline-flex items-center gap-2 rounded-full border border-[#ff6a00]/40 bg-[#ff6a00]/10 px-7 py-3.5 text-sm font-bold text-[#ff8533] transition hover:bg-[#ff6a00] hover:text-black shadow-[0_0_30px_rgba(255,106,0,0.15)]"
+            >
+              Cyber Diagnostic (20 Marks)
               <ArrowRight size={16} />
             </Link>
             <Link
               href="/learn"
               className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
             >
-              Explore Curriculum
+              Explore Roadmaps
             </Link>
           </div>
         </div>
@@ -366,39 +375,50 @@ function TrackCard({
   icon,
   title,
   description,
+  href = "/learn/dsa",
+  totalNodes,
   available,
 }: {
   icon?: React.ReactNode;
   title: string;
   description: string;
+  href?: string;
+  totalNodes?: number;
   available?: boolean;
 }) {
   return (
     <div
       className={`card rounded-2xl p-6 relative flex flex-col justify-between ${
-        available ? "border-[#ff6a00]/35 bg-[#0d0d0d]" : ""
+        available ? "border-[#ff6a00]/35 bg-[#0d0d0d] shadow-[0_0_40px_rgba(255,106,0,0.06)]" : ""
       }`}
     >
       <div>
-        <div
-          className={`grid size-11 place-items-center rounded-xl ${
-            available ? "bg-[#ff6a00] text-black" : "bg-white/5 text-white/30"
-          }`}
-        >
-          {icon || <Code2 size={20} />}
+        <div className="flex items-center justify-between">
+          <div
+            className={`grid size-11 place-items-center rounded-xl ${
+              available ? "bg-[#ff6a00] text-black font-bold shadow-[0_0_20px_rgba(255,106,0,0.3)]" : "bg-white/5 text-white/30"
+            }`}
+          >
+            {icon || <Code2 size={20} />}
+          </div>
+          {totalNodes && (
+            <span className="rounded-full bg-[#ff6a00]/10 border border-[#ff6a00]/20 px-2.5 py-0.5 text-[10px] text-[#ff8533] font-mono font-semibold">
+              {totalNodes} Nodes
+            </span>
+          )}
         </div>
 
-        <h3 className="mt-6 text-lg font-bold text-white">{title}</h3>
+        <h3 className="mt-6 text-xl font-bold text-white">{title}</h3>
         <p className="mt-2 text-sm leading-6 text-white/45">{description}</p>
       </div>
 
-      <div className="mt-8 pt-4 border-t border-white/[0.04]">
+      <div className="mt-8 pt-4 border-t border-white/[0.04] flex items-center justify-between">
         {available ? (
           <Link
-            href="/learn/dsa"
+            href={href}
             className="flex items-center gap-2 text-xs font-bold text-[#ff6a00] hover:text-[#ff7a1a] transition"
           >
-            Start Track
+            Explore Track Roadmap
             <ArrowRight size={13} />
           </Link>
         ) : (
