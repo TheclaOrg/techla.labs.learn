@@ -5,12 +5,14 @@ import Link from "next/link";
 import {
   ArrowRight,
   BrainCircuit,
+  Download,
   Shield,
 } from "lucide-react";
 import { cyberTopics } from "@/data/cybersecurity/topics";
 import { loadStoredMasteries } from "@/lib/storage/progress-store";
 import { computeOverallMasteryPercentage } from "@/lib/mastery/mastery-engine";
 import { generatePersonalizedPath } from "@/lib/learning/personalized-path";
+import { downloadRoadmapFile } from "@/lib/learning/export-roadmap";
 import { KnowledgeGraph } from "@/components/learning/KnowledgeGraph";
 import { TopicCard } from "@/components/learning/TopicCard";
 import { UserTopicMastery, CyberCategory } from "@/types/learning";
@@ -69,6 +71,13 @@ export default function CybersecurityOverviewPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => downloadRoadmapFile("cybersecurity", "md")}
+              className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:border-[#ff6a00] hover:text-[#ff8533] transition"
+            >
+              <Download size={15} />
+              Download Roadmap (.md)
+            </button>
             <Link
               href="/learn/cybersecurity/diagnostic"
               className="flex items-center justify-center gap-2 rounded-full bg-[#ff6a00] px-6 py-3 text-sm font-bold text-black hover:bg-[#ff7a1a] transition shadow-[0_0_25px_rgba(255,106,0,0.25)]"
