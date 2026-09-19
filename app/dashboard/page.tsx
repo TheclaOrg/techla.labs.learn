@@ -32,9 +32,11 @@ import { ContinueCard } from "@/components/dashboard/ContinueCard";
 import { RecommendationCard } from "@/components/dashboard/RecommendationCard";
 import { UserTopicMastery, ProblemProgress } from "@/types/learning";
 import { downloadRoadmapFile } from "@/lib/learning/export-roadmap";
+import { RoadmapPDFModal } from "@/components/learning/RoadmapPDFModal";
 
 export default function DashboardPage() {
   const [activeDomain, setActiveDomain] = useState<"dsa" | "cybersecurity">("dsa");
+  const [showPdfModal, setShowPdfModal] = useState(false);
   const [dsaMasteries, setDsaMasteries] = useState<Record<string, UserTopicMastery>>(() =>
     loadStoredMasteries("dsa")
   );
@@ -151,11 +153,19 @@ export default function DashboardPage() {
 
           <div className="flex flex-wrap items-center gap-2.5">
             <button
-              onClick={() => downloadRoadmapFile(activeDomain, "md")}
-              className="inline-flex items-center gap-2 rounded-full bg-[#ff6a00] px-5 py-2.5 text-xs font-bold text-black hover:bg-[#ff7a1a] transition shadow-[0_0_20px_rgba(255,106,0,0.25)]"
+              onClick={() => setShowPdfModal(true)}
+              className="inline-flex items-center gap-2 rounded-full bg-[#ff6a00] px-5 py-2.5 text-xs font-bold text-black hover:bg-[#ff7a1a] transition shadow-[0_0_20px_rgba(255,106,0,0.35)]"
             >
               <Download size={14} />
-              Download My {isCyber ? "Cyber" : "DSA"} Roadmap (.md)
+              Download Personalized PDF
+            </button>
+
+            <button
+              onClick={() => downloadRoadmapFile(activeDomain, "md")}
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-xs font-semibold text-white/80 hover:text-white hover:border-[#ff6a00] transition"
+            >
+              <Download size={13} />
+              Markdown (.md)
             </button>
 
             <Link
@@ -341,6 +351,13 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
+
+      {/* Personalized High-Definition Printable PDF Modal */}
+      <RoadmapPDFModal
+        domain={activeDomain}
+        isOpen={showPdfModal}
+        onClose={() => setShowPdfModal(false)}
+      />
     </main>
   );
 }

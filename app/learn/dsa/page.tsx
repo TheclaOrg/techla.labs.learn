@@ -15,6 +15,7 @@ import { generatePersonalizedPath } from "@/lib/learning/personalized-path";
 import { downloadRoadmapFile } from "@/lib/learning/export-roadmap";
 import { KnowledgeGraph } from "@/components/learning/KnowledgeGraph";
 import { TopicCard } from "@/components/learning/TopicCard";
+import { RoadmapPDFModal } from "@/components/learning/RoadmapPDFModal";
 import { UserTopicMastery, DSACategory } from "@/types/learning";
 
 const categoryOrder: DSACategory[] = [
@@ -36,6 +37,7 @@ const categoryOrder: DSACategory[] = [
 export default function DsaOverviewPage() {
   const [masteries] = useState<Record<string, UserTopicMastery>>(() => loadStoredMasteries());
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [showPdfModal, setShowPdfModal] = useState(false);
 
   const stats = computeOverallMasteryPercentage(masteries);
   const personalized = generatePersonalizedPath(masteries);
@@ -68,15 +70,15 @@ export default function DsaOverviewPage() {
 
           <div className="flex flex-wrap items-center gap-3">
             <button
-              onClick={() => downloadRoadmapFile("dsa", "md")}
-              className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:border-[#ff6a00] hover:text-[#ff8533] transition"
+              onClick={() => setShowPdfModal(true)}
+              className="flex items-center justify-center gap-2 rounded-full bg-[#ff6a00] px-6 py-3 text-sm font-bold text-black hover:bg-[#ff7a1a] transition shadow-[0_0_25px_rgba(255,106,0,0.35)]"
             >
               <Download size={15} />
-              Download Roadmap (.md)
+              Download Personalized PDF
             </button>
             <Link
               href="/learn/dsa/diagnostic"
-              className="flex items-center justify-center gap-2 rounded-full bg-[#ff6a00] px-6 py-3 text-sm font-bold text-black hover:bg-[#ff7a1a] transition shadow-[0_0_25px_rgba(255,106,0,0.25)]"
+              className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:border-[#ff6a00] hover:text-[#ff8533] transition"
             >
               Take Diagnostic
               <ArrowRight size={15} />
@@ -218,6 +220,13 @@ export default function DsaOverviewPage() {
           </div>
         </section>
       </div>
+
+      {/* Personalized High-Definition Printable PDF Modal */}
+      <RoadmapPDFModal
+        domain="dsa"
+        isOpen={showPdfModal}
+        onClose={() => setShowPdfModal(false)}
+      />
     </main>
   );
 }

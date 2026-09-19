@@ -15,6 +15,7 @@ import { generatePersonalizedPath } from "@/lib/learning/personalized-path";
 import { downloadRoadmapFile } from "@/lib/learning/export-roadmap";
 import { KnowledgeGraph } from "@/components/learning/KnowledgeGraph";
 import { TopicCard } from "@/components/learning/TopicCard";
+import { RoadmapPDFModal } from "@/components/learning/RoadmapPDFModal";
 import { UserTopicMastery, CyberCategory } from "@/types/learning";
 
 const categoryOrder: CyberCategory[] = [
@@ -37,6 +38,7 @@ export default function CybersecurityOverviewPage() {
     loadStoredMasteries("cybersecurity")
   );
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [showPdfModal, setShowPdfModal] = useState(false);
 
   const stats = computeOverallMasteryPercentage(masteries, cyberTopics);
   const personalized = generatePersonalizedPath(masteries, "cybersecurity");
@@ -72,15 +74,15 @@ export default function CybersecurityOverviewPage() {
 
           <div className="flex flex-wrap items-center gap-3">
             <button
-              onClick={() => downloadRoadmapFile("cybersecurity", "md")}
-              className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:border-[#ff6a00] hover:text-[#ff8533] transition"
+              onClick={() => setShowPdfModal(true)}
+              className="flex items-center justify-center gap-2 rounded-full bg-[#ff6a00] px-6 py-3 text-sm font-bold text-black hover:bg-[#ff7a1a] transition shadow-[0_0_25px_rgba(255,106,0,0.35)]"
             >
               <Download size={15} />
-              Download Roadmap (.md)
+              Download Personalized PDF
             </button>
             <Link
               href="/learn/cybersecurity/diagnostic"
-              className="flex items-center justify-center gap-2 rounded-full bg-[#ff6a00] px-6 py-3 text-sm font-bold text-black hover:bg-[#ff7a1a] transition shadow-[0_0_25px_rgba(255,106,0,0.25)]"
+              className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:border-[#ff6a00] hover:text-[#ff8533] transition"
             >
               Take 20-Mark Diagnostic
               <ArrowRight size={15} />
@@ -223,6 +225,13 @@ export default function CybersecurityOverviewPage() {
           </div>
         </section>
       </div>
+
+      {/* Personalized High-Definition Printable PDF Modal */}
+      <RoadmapPDFModal
+        domain="cybersecurity"
+        isOpen={showPdfModal}
+        onClose={() => setShowPdfModal(false)}
+      />
     </main>
   );
 }
