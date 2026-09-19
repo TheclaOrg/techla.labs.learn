@@ -23,7 +23,7 @@ export function TopicCard({
 
   return (
     <Link
-      href={`/learn/dsa/${topic.slug}`}
+      href={`/learn/${topic.domain || "dsa"}/${topic.slug}`}
       className={`group card block rounded-2xl p-5 relative overflow-hidden ${
         isRecommended ? "border-[#ff6a00]/40 bg-[#0d0d0d]" : ""
       }`}

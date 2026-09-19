@@ -110,7 +110,7 @@ export default function LearnDomainsPage() {
                   </span>
                   {isAvailable && (
                     <span className="rounded-full bg-[#ff6a00]/10 px-2.5 py-0.5 text-[10px] text-[#ff8533] font-mono">
-                      44 Topics
+                      {domain.totalTopics} Topics
                     </span>
                   )}
                 </div>

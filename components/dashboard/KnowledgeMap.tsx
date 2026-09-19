@@ -1,12 +1,14 @@
 import React from "react";
-import { UserTopicMastery, DSACategory } from "@/types/learning";
+import { UserTopicMastery, DSACategory, CyberCategory } from "@/types/learning";
 import { dsaTopics } from "@/data/dsa/topics";
+import { cyberTopics } from "@/data/cybersecurity/topics";
 
 interface KnowledgeMapProps {
+  domain?: "dsa" | "cybersecurity";
   masteries: Record<string, UserTopicMastery>;
 }
 
-const categories: DSACategory[] = [
+const dsaCategories: DSACategory[] = [
   "Foundations",
   "Arrays & Strings",
   "Linked Lists",
@@ -22,10 +24,28 @@ const categories: DSACategory[] = [
   "Advanced",
 ];
 
-export function KnowledgeMap({ masteries }: KnowledgeMapProps) {
+const cyberCategories: CyberCategory[] = [
+  "IT Fundamentals",
+  "Networking",
+  "Linux",
+  "Windows",
+  "Security Fundamentals",
+  "Web Security",
+  "Security Tools",
+  "Blue Team & SOC",
+  "Red Team & Offensive",
+  "Cloud Security",
+  "Security Engineering",
+  "Specializations",
+];
+
+export function KnowledgeMap({ domain = "dsa", masteries }: KnowledgeMapProps) {
+  const topics = domain === "cybersecurity" ? cyberTopics : dsaTopics;
+  const categories = domain === "cybersecurity" ? cyberCategories : dsaCategories;
+
   // Group topics by category
   const categoryStats = categories.map((cat) => {
-    const topicsInCat = dsaTopics.filter((t) => t.category === cat);
+    const topicsInCat = topics.filter((t) => t.category === cat);
     const total = topicsInCat.length;
     let totalScore = 0;
     let masteredCount = 0;
@@ -39,14 +59,14 @@ export function KnowledgeMap({ masteries }: KnowledgeMapProps) {
     const maxPoints = total * 5;
     const percentage = maxPoints > 0 ? Math.round((totalScore / maxPoints) * 100) : 0;
 
-    let status = "Locked";
+    let status = "Not Started";
     let color = "gray";
 
     if (percentage >= 80) {
       status = "Mastered";
       color = "orange";
     } else if (percentage >= 40) {
-      status = "Strong";
+      status = "Proficient";
       color = "orange";
     } else if (percentage > 0) {
       status = "Learning";
@@ -82,7 +102,9 @@ export function KnowledgeMap({ masteries }: KnowledgeMapProps) {
 
           <div className="mt-2 flex items-center justify-between text-xs text-white/40">
             <span>{item.status}</span>
-            <span className="font-mono text-white/60">{item.masteredCount}/{item.total} topics</span>
+            <span className="font-mono text-white/60">
+              {item.masteredCount}/{item.total} nodes
+            </span>
           </div>
 
           <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/5">

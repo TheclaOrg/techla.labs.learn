@@ -42,7 +42,7 @@ export function ContinueCard({ topic, mastery }: ContinueCardProps) {
       <div className="mt-6 pt-4 border-t border-white/[0.05] flex items-center justify-between">
         <span className="text-xs text-white/40">{topic.category}</span>
         <Link
-          href={`/learn/dsa/${topic.slug}`}
+          href={`/learn/${topic.domain || "dsa"}/${topic.slug}`}
           className="inline-flex items-center gap-2 text-xs font-semibold text-[#ff6a00] hover:text-[#ff7a1a] transition"
         >
           Resume Concept

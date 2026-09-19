@@ -104,7 +104,7 @@ export function ProblemCard({
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-xs font-semibold text-[#ff6a00] hover:text-[#ff7a1a] transition"
         >
-          Solve on LeetCode
+          {problem.platform === "LeetCode" ? "Solve on LeetCode" : `Open Lab on ${problem.platform}`}
           <ExternalLink size={12} />
         </a>
       </div>

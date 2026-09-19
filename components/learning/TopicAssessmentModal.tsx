@@ -47,7 +47,7 @@ export function TopicAssessmentModal({
       setIsAnswered(false);
     } else {
       const finalScore = Math.round(((correctCount + (selectedOption === currentQ.correctAnswer ? 0 : 0)) / questions.length) * 100);
-      updateTopicMastery(topic.slug, { checkInScore: finalScore });
+      updateTopicMastery(topic.slug, { checkInScore: finalScore }, topic.domain || "dsa");
       setIsCompleted(true);
       onAssessmentCompleted(finalScore);
     }

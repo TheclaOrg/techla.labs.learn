@@ -10,22 +10,23 @@ import {
   Code2,
   HelpCircle,
   RotateCcw,
+  Shield,
   Trophy,
 } from "lucide-react";
-import { dsaDiagnosticQuestions } from "@/data/dsa/questions";
+import { cyberDiagnosticQuestions } from "@/data/cybersecurity/questions";
 import { scoreDiagnosticAssessment } from "@/lib/diagnostic/scoring";
 import { saveDiagnosticResult } from "@/lib/storage/progress-store";
 import { DiagnosticResult } from "@/types/learning";
 import { topicsBySlug } from "@/lib/learning/graph";
 
-export default function DiagnosticEnginePage() {
+export default function CybersecurityDiagnosticPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, number>>({});
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [result, setResult] = useState<DiagnosticResult | null>(null);
 
-  const questions = dsaDiagnosticQuestions;
+  const questions = cyberDiagnosticQuestions;
   const currentQuestion = questions[currentIndex];
   const totalQuestions = questions.length;
   const progressPercent = Math.round(((currentIndex + 1) / totalQuestions) * 100);
@@ -46,9 +47,9 @@ export default function DiagnosticEnginePage() {
       setSelectedOption(userAnswers[questions[currentIndex + 1]?.id] ?? null);
       setShowExplanation(userAnswers[questions[currentIndex + 1]?.id] !== undefined);
     } else {
-      // Complete diagnostic assessment
-      const finalResult = scoreDiagnosticAssessment(userAnswers, "dsa");
-      saveDiagnosticResult(finalResult, "dsa");
+      // Complete diagnostic assessment (20 marks)
+      const finalResult = scoreDiagnosticAssessment(userAnswers, "cybersecurity");
+      saveDiagnosticResult(finalResult, "cybersecurity");
       setResult(finalResult);
     }
   };
@@ -83,17 +84,17 @@ export default function DiagnosticEnginePage() {
             </div>
 
             <span className="mt-7 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#ff6a00]">
-              Diagnostic Assessment Complete
+              Cybersecurity Diagnostic Complete (20 Marks)
             </span>
 
             <h1 className="mt-3 text-4xl sm:text-5xl font-bold text-white tracking-tight">
-              Your personalized learning map is ready.
+              Your personalized security path is generated.
             </h1>
 
             <p className="mt-4 text-sm sm:text-base text-white/50 max-w-2xl mx-auto leading-7">
-              You correctly solved <span className="text-white font-bold">{result.score}</span> of{" "}
-              <span className="text-white font-bold">{result.totalQuestions}</span> concepts ({result.percentage}%).
-              We mapped your strengths and locked gaps across the prerequisite graph.
+              You scored <span className="text-white font-bold">{result.score}</span> /{" "}
+              <span className="text-white font-bold">{result.totalQuestions}</span> marks ({result.percentage}%).
+              Your results have been mapped across the 12 cybersecurity prerequisite modules.
             </p>
 
             {/* Counts Breakdown */}
@@ -118,7 +119,7 @@ export default function DiagnosticEnginePage() {
                 href="/dashboard"
                 className="inline-flex items-center gap-2 rounded-full bg-[#ff6a00] px-8 py-3.5 text-sm font-bold text-black hover:bg-[#ff7a1a] transition shadow-[0_0_30px_rgba(255,106,0,0.3)]"
               >
-                Start My Recommended Path
+                Go to Dashboard
                 <ArrowRight size={16} />
               </Link>
               <button
@@ -135,7 +136,7 @@ export default function DiagnosticEnginePage() {
           <div className="mt-12">
             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
               <BrainCircuit size={18} className="text-[#ff6a00]" />
-              Your Next Step Recommendations
+              Tailored Cybersecurity Starting Points
             </h2>
 
             <div className="space-y-3">
@@ -163,7 +164,7 @@ export default function DiagnosticEnginePage() {
                     </div>
 
                     <Link
-                      href={`/learn/dsa/${topic.slug}`}
+                      href={`/learn/cybersecurity/${topic.slug}`}
                       className="shrink-0 flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-4 py-2 text-xs font-semibold text-white hover:bg-[#ff6a00] hover:text-black hover:border-[#ff6a00] transition"
                     >
                       Study Topic
@@ -188,7 +189,7 @@ export default function DiagnosticEnginePage() {
         {/* Navigation & Progress bar */}
         <div className="flex items-center justify-between">
           <Link
-            href="/learn/dsa"
+            href="/learn/cybersecurity"
             className="flex items-center gap-1.5 text-xs font-medium text-white/40 hover:text-white transition"
           >
             <ArrowLeft size={14} />
@@ -197,7 +198,7 @@ export default function DiagnosticEnginePage() {
           <div className="flex items-center gap-2 font-mono text-xs text-white/40">
             <span className="text-[#ff8533] font-bold">{currentIndex + 1}</span>
             <span>/</span>
-            <span>{totalQuestions}</span>
+            <span>{totalQuestions} (20 Marks)</span>
           </div>
         </div>
 
@@ -212,7 +213,7 @@ export default function DiagnosticEnginePage() {
         <div className="mt-12">
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-[#ff6a00]/30 bg-[#ff6a00]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#ff8533]">
-              <BrainCircuit size={12} />
+              <Shield size={12} />
               {currentQuestion.category}
             </span>
             <span className="rounded-full bg-white/5 px-2.5 py-1 text-[10px] text-white/40 uppercase font-mono">
@@ -229,7 +230,7 @@ export default function DiagnosticEnginePage() {
             <div className="mt-5 overflow-hidden rounded-2xl border border-white/10 bg-[#080808]">
               <div className="flex items-center gap-1.5 border-b border-white/5 px-4 py-2 text-[10px] text-white/30 font-mono">
                 <Code2 size={12} />
-                <span>code preview</span>
+                <span>code / log preview</span>
               </div>
               <pre className="p-4 font-mono text-xs leading-relaxed text-white/85 overflow-x-auto">
                 <code>{currentQuestion.codeSnippet}</code>
@@ -294,7 +295,7 @@ export default function DiagnosticEnginePage() {
                   </span>
                 ) : (
                   <span className="text-white/60 flex items-center gap-1">
-                    <HelpCircle size={16} /> Conceptual Explanation:
+                    <HelpCircle size={16} /> Technical Explanation:
                   </span>
                 )}
               </div>
@@ -318,7 +319,7 @@ export default function DiagnosticEnginePage() {
               onClick={handleNext}
               className="flex items-center gap-2 rounded-full bg-[#ff6a00] px-7 py-3 text-sm font-bold text-black disabled:cursor-not-allowed disabled:opacity-30 transition hover:bg-[#ff7a1a] shadow-[0_0_25px_rgba(255,106,0,0.25)]"
             >
-              {currentIndex === totalQuestions - 1 ? "Complete Diagnostic" : "Next Question"}
+              {currentIndex === totalQuestions - 1 ? "Complete 20-Mark Diagnostic" : "Next Question"}
               <ArrowRight size={16} />
             </button>
           </div>

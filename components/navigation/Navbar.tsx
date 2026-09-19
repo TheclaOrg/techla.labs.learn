@@ -10,10 +10,10 @@ export function Navbar() {
   const pathname = usePathname();
 
   const navLinks = [
-    { href: "/learn", label: "Domains" },
-    { href: "/learn/dsa", label: "DSA Path" },
+    { href: "/learn", label: "Roadmaps" },
+    { href: "/learn/dsa", label: "DSA" },
+    { href: "/learn/cybersecurity", label: "Cybersecurity" },
     { href: "/dashboard", label: "Dashboard" },
-    { href: "/learn/dsa/diagnostic", label: "Diagnostic" },
   ];
 
   return (
@@ -55,10 +55,10 @@ export function Navbar() {
         {/* Action CTAs */}
         <div className="hidden items-center gap-3.5 md:flex">
           <Link
-            href="/auth"
+            href="/dashboard"
             className="px-3.5 py-2 text-sm text-white/60 transition hover:text-white"
           >
-            Sign in
+            My Progress
           </Link>
           <Link
             href="/learn"
@@ -95,11 +95,11 @@ export function Navbar() {
             ))}
             <div className="my-2 h-px bg-white/10" />
             <Link
-              href="/auth"
+              href="/dashboard"
               onClick={() => setMobileOpen(false)}
               className="py-1 text-white/70 hover:text-white"
             >
-              Sign in
+              My Progress
             </Link>
             <Link
               href="/learn"

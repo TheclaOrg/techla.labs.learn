@@ -42,7 +42,7 @@ export function RecommendationCard({ topic, reason }: RecommendationCardProps) {
       <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between">
         <span className="text-xs text-white/40">{topic.estimatedMinutes} mins estimated</span>
         <Link
-          href={`/learn/dsa/${topic.slug}`}
+          href={`/learn/${topic.domain || "dsa"}/${topic.slug}`}
           className="inline-flex items-center gap-2 rounded-full bg-[#ff6a00] px-5 py-2.5 text-xs font-bold text-black hover:bg-[#ff7a1a] transition"
         >
           Start Topic
