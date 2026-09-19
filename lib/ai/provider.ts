@@ -17,14 +17,27 @@ export class OpenRouterAIProvider implements AIProvider {
   }
 
   async generateExplanation(topicTitle: string, userLevel: string): Promise<string> {
+    const res = await this.generateExplanationWithMeta(topicTitle, userLevel);
+    return res.text;
+  }
+
+  async generateExplanationWithMeta(
+    topicTitle: string,
+    userLevel: string,
+    domain?: "dsa" | "cybersecurity"
+  ): Promise<{ text: string; references?: Array<{ title: string; url: string; source: string; category: string; description: string }> }> {
     const data = await this.callTutorApi({
       action: "explanation",
       topicTitle,
       userLevel,
+      domain,
     });
 
     if (data && data.success && typeof data.text === "string") {
-      return data.text;
+      return {
+        text: data.text,
+        references: Array.isArray(data.references) ? (data.references as Array<{ title: string; url: string; source: string; category: string; description: string }>) : undefined,
+      };
     }
 
     // Deterministic fallback if offline or request fails
@@ -34,10 +47,14 @@ export class OpenRouterAIProvider implements AIProvider {
     const topic = matchedSlug ? topicsBySlug[matchedSlug] : null;
 
     if (topic) {
-      return `Core Mental Model: ${topic.summary}\n\nKey Invariants:\n${topic.keyConcepts.map((k) => `• ${k}`).join("\n")}\n\nCommon Pitfalls to Avoid:\n${topic.commonMistakes.map((m) => `• ${m}`).join("\n")}`;
+      return {
+        text: `Core Mental Model: ${topic.summary}\n\nKey Invariants:\n${topic.keyConcepts.map((k) => `• ${k}`).join("\n")}\n\nCommon Pitfalls to Avoid:\n${topic.commonMistakes.map((m) => `• ${m}`).join("\n")}`,
+      };
     }
 
-    return `Core Mental Model: ${topicTitle} is a core foundational concept in software problem solving. Focus on identifying the underlying invariant, avoiding redundant work, and testing against edge cases.`;
+    return {
+      text: `Core Mental Model: ${topicTitle} is a core foundational concept in software problem solving. Focus on identifying the underlying invariant, avoiding redundant work, and testing against edge cases.`,
+    };
   }
 
   async generateHint(problemTitle: string, topicTitle: string): Promise<string> {

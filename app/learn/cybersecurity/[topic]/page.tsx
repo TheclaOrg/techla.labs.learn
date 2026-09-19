@@ -54,6 +54,7 @@ export default function CybersecurityTopicDetailPage({ params }: TopicPageProps)
   );
   const [isAssessmentOpen, setIsAssessmentOpen] = useState(false);
   const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+  const [aiReferences, setAiReferences] = useState<Array<{ title: string; url: string; source: string; category: "DSA" | "Cybersecurity" | "General"; description: string }> | undefined>(undefined);
   const [loadingAi, setLoadingAi] = useState(false);
 
   if (!topic) {
@@ -83,8 +84,9 @@ export default function CybersecurityTopicDetailPage({ params }: TopicPageProps)
   const handleFetchAiTutor = async () => {
     setLoadingAi(true);
     try {
-      const explanation = await aiProvider.generateExplanation(topic.title, "intermediate");
-      setAiExplanation(explanation);
+      const res = await (aiProvider as any).generateExplanationWithMeta(topic.title, "intermediate", "cybersecurity");
+      setAiExplanation(res.text);
+      setAiReferences(res.references);
     } catch {
       setAiExplanation("AI Tutor analysis is currently available via deterministic mode.");
     } finally {
@@ -108,43 +110,49 @@ export default function CybersecurityTopicDetailPage({ params }: TopicPageProps)
   return (
     <main className="min-h-screen bg-[#050505] px-5 pb-28 pt-28 lg:px-8">
       <div className="mx-auto max-w-6xl">
-        {/* Breadcrumb & Navigation */}
-        <div className="flex items-center justify-between">
-          <Link
-            href="/learn/cybersecurity"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/40 hover:text-white transition"
-          >
-            <ArrowLeft size={14} />
-            Back to Cybersecurity Roadmap
-          </Link>
-          <MasteryBadge level={level} status={currentMastery?.status} />
-        </div>
+        {/* Navigation Breadcrumb */}
+        <Link
+          href="/learn/cybersecurity"
+          className="inline-flex items-center gap-1.5 text-xs text-white/40 hover:text-white transition mb-6"
+        >
+          <ArrowLeft size={14} />
+          Back to Cybersecurity Roadmap
+        </Link>
 
-        {/* Hero Card */}
-        <div className="mt-6 rounded-3xl border border-white/[0.08] bg-[#090909] p-6 sm:p-10 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#ff6a00]/5 rounded-full blur-[120px] pointer-events-none" />
+        {/* Topic Header Card */}
+        <div className="card rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="rounded-full bg-[#ff6a00]/10 border border-[#ff6a00]/20 px-3 py-0.5 text-xs text-[#ff8533] font-semibold">
+                  {topic.category}
+                </span>
+                <span className="text-xs text-white/30">•</span>
+                <span className="flex items-center gap-1 text-xs text-white/40">
+                  <Clock size={12} />
+                  {topic.estimatedMinutes} mins
+                </span>
+                <span className="text-xs text-white/30">•</span>
+                <span className="text-xs text-white/40">Level {topic.difficulty}/5</span>
+              </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 mb-4">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#ff6a00]/30 bg-[#ff6a00]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#ff8533]">
-              <Shield size={12} />
-              {topic.category}
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1 text-xs text-white/50">
-              <Clock size={12} />
-              {topic.estimatedMinutes} mins
-            </span>
+              <h1 className="text-3xl font-bold tracking-tight sm:text-5xl text-white">
+                {topic.title}
+              </h1>
+
+              <p className="mt-3 max-w-2xl text-sm sm:text-base text-white/60 leading-relaxed">
+                {topic.description}
+              </p>
+            </div>
+
+            {/* Current Mastery Status Tile */}
+            <div className="shrink-0">
+              <MasteryBadge level={level} size="lg" />
+            </div>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white">
-            {topic.title}
-          </h1>
-
-          <p className="mt-4 text-base leading-relaxed text-white/60 max-w-3xl">
-            {topic.description}
-          </p>
-
-          {/* Key Actions */}
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          {/* Action Row */}
+          <div className="mt-8 pt-6 border-t border-white/[0.06] flex flex-wrap items-center gap-3">
             <button
               onClick={() => setIsAssessmentOpen(true)}
               className="inline-flex items-center gap-2 rounded-full bg-[#ff6a00] px-6 py-3 text-xs font-bold text-black hover:bg-[#ff7a1a] transition shadow-[0_0_25px_rgba(255,106,0,0.25)]"
@@ -169,9 +177,9 @@ export default function CybersecurityTopicDetailPage({ params }: TopicPageProps)
           <div className="mt-6 rounded-2xl border border-[#ff6a00]/30 bg-[#0d0d0d] p-6 sm:p-8">
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#ff8533] mb-4">
               <Sparkles size={14} />
-              AI Conceptual Guide
+              AI Conceptual Guide & Live References
             </div>
-            <AITutorResponse content={aiExplanation} />
+            <AITutorResponse content={aiExplanation} references={aiReferences} />
           </div>
         )}
 

@@ -81,6 +81,27 @@ export function generateMarkdownRoadmap(domain: "dsa" | "cybersecurity"): string
   });
 
   md += `---\n\n`;
+
+  // Section 4: Curated Free Learning Resources Directory
+  md += `## 4. Curated Free Learning Resources & Lab Directory\n\n`;
+  if (isCyber) {
+    md += `### Essential Free Cybersecurity Portals & Labs\n`;
+    md += `- **PortSwigger Web Security Academy**: Free interactive web application security labs and vulnerability tutorials (SQLi, XSS, SSRF, Auth).\n`;
+    md += `- **OWASP Top 10 & Cheat Sheet Series**: Industry standard defensive engineering checklists and vulnerability mitigation guides.\n`;
+    md += `- **TryHackMe & OverTheWire Bandit**: Hands-on Linux CLI fundamentals, basic exploitation, and network security gamified rooms.\n`;
+    md += `- **MITRE ATT&CK Framework**: Comprehensive knowledge base of adversary tactics, techniques, and real-world threat intelligence.\n`;
+    md += `- **Wireshark Packet Analysis Labs**: Free official packet captures and network protocol dissection tutorials.\n`;
+    md += `- **Linux Journey & Professor Messer**: Free foundational Linux sysadmin and Network+/Security+ core training videos.\n\n`;
+  } else {
+    md += `### Essential Free DSA Portals & Video Walkthroughs\n`;
+    md += `- **NeetCode.io (YouTube & Practice)**: Step-by-step visual intuition, code explanations, and NeetCode 150/Blind 75 video solutions.\n`;
+    md += `- **Take U Forward (Striver)**: In-depth DSA video series covering recursion, graphs, dynamic programming, and binary search.\n`;
+    md += `- **VisuAlgo.net**: Interactive visual animation of sorting algorithms, binary search trees, graph traversals, and dynamic arrays.\n`;
+    md += `- **CP-Algorithms**: Comprehensive mathematical proofs and code implementations for competitive programming and advanced graph/number theory.\n`;
+    md += `- **MIT OpenCourseWare (6.006 / 6.046J)**: Rigorous algorithmic analysis, asymptotic time complexity, and data structure theory.\n\n`;
+  }
+
+  md += `---\n\n`;
   md += `*Keep learning and testing at https://app.techla.labs/learn/${domain}*\n`;
 
   return md;

@@ -1,11 +1,20 @@
 import React from "react";
-import { CheckCircle2, AlertTriangle, Lightbulb, Zap, Code2 } from "lucide-react";
+import { CheckCircle2, AlertTriangle, Lightbulb, Zap, Globe, ExternalLink, ShieldCheck } from "lucide-react";
+
+export interface AITutorWebReference {
+  title: string;
+  url: string;
+  source: string;
+  category: "DSA" | "Cybersecurity" | "General";
+  description: string;
+}
 
 interface AITutorResponseProps {
   content: string;
+  references?: AITutorWebReference[];
 }
 
-export function AITutorResponse({ content }: AITutorResponseProps) {
+export function AITutorResponse({ content, references }: AITutorResponseProps) {
   if (!content) return null;
 
   // Clean and parse the raw text into structured sections
@@ -82,15 +91,6 @@ export function AITutorResponse({ content }: AITutorResponseProps) {
     sections.push(currentSection);
   }
 
-  // Fallback if parsing produces no sections (just clean lines)
-  if (sections.length === 0) {
-    return (
-      <div className="space-y-3 text-sm leading-relaxed text-white/80">
-        <p>{cleanLine(content)}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-4">
       {sections.map((sec, idx) => {
@@ -153,6 +153,56 @@ export function AITutorResponse({ content }: AITutorResponseProps) {
           </div>
         );
       })}
+
+      {/* Authoritative Web References Panel */}
+      {references && references.length > 0 && (
+        <div className="rounded-xl border border-[#ff6a00]/30 bg-[#0d0d0d] p-4 shadow-[0_0_30px_rgba(255,106,0,0.06)]">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2 text-[#ff8533]">
+              <Globe size={15} />
+              <h4 className="text-xs uppercase font-bold tracking-wider">
+                Authoritative Web Citations & Research
+              </h4>
+            </div>
+            <span className="flex items-center gap-1 text-[10px] text-emerald-400 font-mono bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+              <ShieldCheck size={11} />
+              Verified Standard
+            </span>
+          </div>
+
+          <p className="text-xs text-white/50 mb-3">
+            Grounded against top industry platforms, MIT/Harvard lecture notes, and active documentation:
+          </p>
+
+          <div className="grid gap-2 sm:grid-cols-2">
+            {references.map((ref, rIdx) => (
+              <a
+                key={rIdx}
+                href={ref.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col justify-between rounded-lg border border-white/10 bg-white/[0.02] p-3 hover:border-[#ff6a00]/50 hover:bg-[#ff6a00]/5 transition"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-1 mb-1">
+                    <span className="rounded bg-[#ff6a00]/10 border border-[#ff6a00]/20 px-1.5 py-0.5 text-[9px] font-semibold text-[#ff8533] uppercase">
+                      {ref.source}
+                    </span>
+                    <ExternalLink size={12} className="text-white/30 group-hover:text-[#ff6a00] transition" />
+                  </div>
+                  <h5 className="text-xs font-semibold text-white group-hover:text-[#ff8533] transition line-clamp-1">
+                    {ref.title}
+                  </h5>
+                  <p className="mt-1 text-[11px] text-white/45 leading-4 line-clamp-2">
+                    {ref.description}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

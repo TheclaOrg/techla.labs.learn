@@ -49,6 +49,7 @@ export default function TopicDetailPage({ params }: TopicPageProps) {
   const [problemProgress, setProblemProgress] = useState<Record<string, ProblemProgress>>(() => loadProblemProgress());
   const [isAssessmentOpen, setIsAssessmentOpen] = useState(false);
   const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+  const [aiReferences, setAiReferences] = useState<Array<{ title: string; url: string; source: string; category: "DSA" | "Cybersecurity" | "General"; description: string }> | undefined>(undefined);
   const [loadingAi, setLoadingAi] = useState(false);
 
   if (!topic) {
@@ -78,8 +79,9 @@ export default function TopicDetailPage({ params }: TopicPageProps) {
   const handleFetchAiTutor = async () => {
     setLoadingAi(true);
     try {
-      const explanation = await aiProvider.generateExplanation(topic.title, "intermediate");
-      setAiExplanation(explanation);
+      const res = await (aiProvider as any).generateExplanationWithMeta(topic.title, "intermediate", "dsa");
+      setAiExplanation(res.text);
+      setAiReferences(res.references);
     } catch {
       setAiExplanation("AI Tutor analysis is currently available via deterministic mode.");
     } finally {
@@ -294,7 +296,7 @@ export default function TopicDetailPage({ params }: TopicPageProps) {
 
               {aiExplanation ? (
                 <div className="mt-4">
-                  <AITutorResponse content={aiExplanation} />
+                  <AITutorResponse content={aiExplanation} references={aiReferences} />
                 </div>
               ) : (
                 <p className="mt-3 text-xs text-white/40">

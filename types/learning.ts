@@ -88,6 +88,9 @@ export interface PracticeProblem {
   difficulty: "Easy" | "Medium" | "Hard";
   acceptanceRate?: string;
   summary?: string;
+  videoSolutionUrl?: string;
+  videoSolutionAuthor?: string;
+  editorialUrl?: string;
 }
 
 export interface DiagnosticQuestion {

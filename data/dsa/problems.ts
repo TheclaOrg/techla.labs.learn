@@ -12,6 +12,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "52.4%",
     summary: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=KLlXCFG5TnA",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/two-integer-sum",
   },
   {
     id: "prob-2",
@@ -23,6 +26,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "46.8%",
     summary: "Determine if a string is a palindrome after converting all uppercase letters to lowercase and removing all non-alphanumeric characters.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=jJXJ16kPFWg",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/is-palindrome",
   },
   {
     id: "prob-3",
@@ -34,6 +40,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "61.2%",
     summary: "Find two numbers in a 1-indexed sorted array that add up to a specific target using O(1) extra space.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=cQ1Oz4ckcMT",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/two-integer-sum-ii",
   },
   {
     id: "prob-4",
@@ -45,6 +54,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "34.1%",
     summary: "Return all unique triplets [nums[i], nums[j], nums[k]] such that nums[i] + nums[j] + nums[k] == 0.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=jzZsG8n2R9A",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/three-integer-sum",
   },
   {
     id: "prob-5",
@@ -56,6 +68,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "54.7%",
     summary: "Find two vertical lines that together with the x-axis form a container that stores the maximum amount of water.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=UuiTKBwPgAo",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/max-water-container",
   },
   {
     id: "prob-6",
@@ -67,6 +82,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "54.1%",
     summary: "Maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=1pkOGcDnx5o",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/buy-and-sell-crypto",
   },
   {
     id: "prob-7",
@@ -78,6 +96,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "34.8%",
     summary: "Find the length of the longest substring without duplicate characters.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=wiGpQwVHdE0",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/longest-substring-without-duplicates",
   },
   {
     id: "prob-8",
@@ -89,6 +110,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "43.6%",
     summary: "Find the total number of subarrays whose sum equals to k using prefix sums and a hash map.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=fFVZt-6sgyo",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://takeuforward.org/data-structure/count-subarray-sum-equals-k/",
   },
 
   // Hashing
@@ -102,6 +126,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "64.0%",
     summary: "Determine if string t is an anagram of string s.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=9UtInBqnCgA",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/is-anagram",
   },
   {
     id: "prob-10",
@@ -113,6 +140,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "68.2%",
     summary: "Group strings that are anagrams of each other together into sub-lists.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=vzdNOK2oQ2g",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/anagram-groups",
   },
   {
     id: "prob-11",
@@ -124,6 +154,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "47.5%",
     summary: "Find the length of the longest consecutive elements sequence in an unsorted array in O(n) time using a hash set.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=P6RZZMu_maU",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/longest-consecutive-sequence",
   },
 
   // Stacks & Queues
@@ -137,6 +170,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "40.9%",
     summary: "Determine if the input string containing brackets '(', ')', '{', '}', '[' and ']' is valid.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=WTzjTskDFMg",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/validate-parentheses",
   },
   {
     id: "prob-13",
@@ -148,6 +184,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "66.3%",
     summary: "Find the number of days you have to wait after the i-th day to get a warmer temperature using a monotonic stack.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=cTBiBSnjO3c",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/daily-temperatures",
   },
   {
     id: "prob-14",
@@ -159,6 +198,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Hard",
     acceptanceRate: "44.2%",
     summary: "Find the area of the largest rectangle in the histogram in O(n) time using a monotonic stack.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=zx5SwR131tc",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/largest-rectangle-in-histogram",
   },
 
   // Linked Lists
@@ -172,6 +214,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "75.4%",
     summary: "Reverse a singly linked list in-place and return the reversed list head.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=G0_I-ZF0S38",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/reverse-a-linked-list",
   },
   {
     id: "prob-16",
@@ -183,6 +228,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "49.8%",
     summary: "Determine if a linked list has a cycle using Floyd's Tortoise and Hare algorithm.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=gBTe7lFR3vc",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/linked-list-cycle-detection",
   },
   {
     id: "prob-17",
@@ -194,6 +242,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "63.9%",
     summary: "Merge two sorted linked lists and return it as a new sorted list.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=XIdigk956u0",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/merge-two-sorted-linked-lists",
   },
 
   // Searching
@@ -207,6 +258,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "57.3%",
     summary: "Given an array of integers nums which is sorted in ascending order, search target in nums in O(log n) runtime.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=s4DPM8ct1pI",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/binary-search",
   },
   {
     id: "prob-19",
@@ -218,6 +272,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "40.3%",
     summary: "Search for a target value in an array rotated at some unknown pivot in O(log n) time.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=U8XENwh8Oy8",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/find-target-in-rotated-sorted-array",
   },
   {
     id: "prob-20",
@@ -229,6 +286,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "50.1%",
     summary: "Find the minimum integer eating speed k such that Koko can eat all the bananas within h hours using binary search on answer space.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=U2SozAs9RzA",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/eating-bananas",
   },
 
   // Trees
@@ -242,6 +302,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "75.8%",
     summary: "Given the root of a binary tree, return the inorder traversal of its nodes' values.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=g_S5WuasWUE",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://takeuforward.org/data-structure/inorder-traversal-of-binary-tree/",
   },
   {
     id: "prob-22",
@@ -253,6 +316,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "75.1%",
     summary: "Find the maximum depth (number of nodes along longest path from root to farthest leaf).",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=hTM3phVI6YQ",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/depth-of-binary-tree",
   },
   {
     id: "prob-23",
@@ -264,6 +330,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "32.9%",
     summary: "Determine if a given binary tree is a valid Binary Search Tree with valid subtree boundaries.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=s6ATEkipzow",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/valid-binary-search-tree",
   },
   {
     id: "prob-24",
@@ -275,6 +344,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "67.0%",
     summary: "Find the kth largest element in an unsorted array using a min-heap or QuickSelect.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=XEmy138764w",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/kth-largest-element-in-an-array",
   },
   {
     id: "prob-25",
@@ -286,6 +358,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "64.8%",
     summary: "Implement a trie with insert, search, and startsWith methods.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=oobqoCJlHA0",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/implement-prefix-tree",
   },
 
   // Graphs
@@ -299,6 +374,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "59.0%",
     summary: "Count the number of islands in a 2D grid using BFS or DFS flood-fill.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=pV2kpPD66nE",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/count-number-of-islands",
   },
   {
     id: "prob-27",
@@ -310,6 +388,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "47.3%",
     summary: "Determine if it is possible to finish all courses given prerequisite pairs using Kahn's topological sort.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=EgI5nU9etnU",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/course-schedule",
   },
   {
     id: "prob-28",
@@ -321,6 +402,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "54.2%",
     summary: "Find how long it will take for all nodes to receive a signal using Dijkstra's shortest path algorithm.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=EaphyqKU4PQ",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/network-delay-time",
   },
   {
     id: "prob-29",
@@ -332,6 +416,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "63.5%",
     summary: "Find an edge that can be removed so that the resulting graph is a tree using Disjoint Set Union.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=FXWRE67PLL0",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/redundant-connection",
   },
 
   // Dynamic Programming
@@ -345,6 +432,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Easy",
     acceptanceRate: "52.8%",
     summary: "Calculate how many distinct ways you can climb to the top of n steps taking 1 or 2 steps at a time.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=Y0lT9Fck7q8",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/climbing-stairs",
   },
   {
     id: "prob-31",
@@ -356,6 +446,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "50.9%",
     summary: "Maximize the amount of money you can rob tonight without alerting the police by robbing adjacent houses.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=73r3KWiEvyk",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/house-robber",
   },
   {
     id: "prob-32",
@@ -367,6 +460,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "43.8%",
     summary: "Compute the fewest number of coins needed to make up a given amount using dynamic programming.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=H9bfqozJoqs",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/coin-change",
   },
   {
     id: "prob-33",
@@ -378,6 +474,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "55.4%",
     summary: "Find the length of the longest strictly increasing subsequence in O(n log n) time.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=cjWnW0hdF1Y",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/longest-increasing-subsequence",
   },
 
   // Backtracking
@@ -391,6 +490,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "77.5%",
     summary: "Return all possible subsets (the power set) of an integer array with unique elements.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=REOH22Xwdlk",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/subsets",
   },
   {
     id: "prob-35",
@@ -402,6 +504,9 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Medium",
     acceptanceRate: "78.4%",
     summary: "Given an array nums of distinct integers, return all possible permutations.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=s7AvT7cGdSo",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/permutations",
   },
   {
     id: "prob-36",
@@ -413,5 +518,8 @@ export const dsaProblems: PracticeProblem[] = [
     difficulty: "Hard",
     acceptanceRate: "68.2%",
     summary: "Place n queens on an n×n chessboard such that no two queens attack each other.",
+    videoSolutionUrl: "https://www.youtube.com/watch?v=Ph95IHmRp5M",
+    videoSolutionAuthor: "NeetCode",
+    editorialUrl: "https://neetcode.io/problems/n-queens",
   },
 ];

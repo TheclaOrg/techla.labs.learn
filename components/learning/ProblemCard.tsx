@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { PracticeProblem, ProblemProgress } from "@/types/learning";
-import { ExternalLink, CheckCircle2, Circle, Code2 } from "lucide-react";
+import { ExternalLink, CheckCircle2, Circle, Code2, Video, BookOpen } from "lucide-react";
 import { saveProblemStatus } from "@/lib/storage/progress-store";
 
 interface ProblemCardProps {
@@ -96,18 +96,48 @@ export function ProblemCard({
         )}
       </div>
 
-      <div className="mt-4 pt-3 border-t border-white/[0.04] flex items-center justify-between">
-        <span className="text-[11px] text-white/30 font-mono">Platform: {problem.platform}</span>
-        <a
-          href={problem.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-[#ff6a00] hover:text-[#ff7a1a] transition"
-        >
-          {problem.platform === "LeetCode" ? "Solve on LeetCode" : `Open Lab on ${problem.platform}`}
-          <ExternalLink size={12} />
-        </a>
+      <div className="mt-4 pt-3 border-t border-white/[0.04] space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] text-white/30 font-mono">Platform: {problem.platform}</span>
+          <a
+            href={problem.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-[#ff6a00] hover:text-[#ff7a1a] transition"
+          >
+            {problem.platform === "LeetCode" ? "Solve on LeetCode" : `Open Lab on ${problem.platform}`}
+            <ExternalLink size={12} />
+          </a>
+        </div>
+
+        {(problem.videoSolutionUrl || problem.editorialUrl) && (
+          <div className="flex flex-wrap items-center gap-2 pt-1.5 border-t border-white/[0.03]">
+            {problem.videoSolutionUrl && (
+              <a
+                href={problem.videoSolutionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-md bg-red-500/10 border border-red-500/20 px-2 py-0.5 text-[10px] font-semibold text-red-400 hover:bg-red-500/20 transition"
+              >
+                <Video size={10} />
+                <span>Watch {problem.videoSolutionAuthor || "YouTube"} Solution</span>
+              </a>
+            )}
+            {problem.editorialUrl && (
+              <a
+                href={problem.editorialUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-md bg-white/5 border border-white/10 px-2 py-0.5 text-[10px] font-semibold text-white/70 hover:text-white hover:bg-white/10 transition"
+              >
+                <BookOpen size={10} />
+                <span>Editorial Guide</span>
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 }
+

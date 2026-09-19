@@ -6,7 +6,7 @@ interface MasteryBadgeProps {
   level: MasteryLevel;
   status?: "locked" | "available" | "learning" | "practicing" | "mastered";
   showIcon?: boolean;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
 }
 
 export function MasteryBadge({
@@ -64,7 +64,12 @@ export function MasteryBadge({
   };
 
   const config = configs[level] || configs[0];
-  const sizeStyles = size === "sm" ? "px-2.5 py-0.5 text-[11px]" : "px-3 py-1 text-xs";
+  const sizeStyles =
+    size === "lg"
+      ? "px-4 py-1.5 text-sm"
+      : size === "md"
+        ? "px-3 py-1 text-xs"
+        : "px-2.5 py-0.5 text-[11px]";
 
   return (
     <span
