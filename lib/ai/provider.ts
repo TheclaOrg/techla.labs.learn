@@ -34,10 +34,10 @@ export class OpenRouterAIProvider implements AIProvider {
     const topic = matchedSlug ? topicsBySlug[matchedSlug] : null;
 
     if (topic) {
-      return `### Conceptual Breakdown: ${topic.title}\n\n**Core Mental Model:** ${topic.summary}\n\n**Key Invariants:**\n${topic.keyConcepts.map((k) => `- **${k}**`).join("\n")}\n\n**Common Pitfalls to Avoid:**\n${topic.commonMistakes.map((m) => `- ${m}`).join("\n")}\n\n*Optimized for ${userLevel} learner trajectory.*`;
+      return `Core Mental Model: ${topic.summary}\n\nKey Invariants:\n${topic.keyConcepts.map((k) => `• ${k}`).join("\n")}\n\nCommon Pitfalls to Avoid:\n${topic.commonMistakes.map((m) => `• ${m}`).join("\n")}`;
     }
 
-    return `### Understanding ${topicTitle}\n\n${topicTitle} is a foundational concept in computational design. Focus on identifying the underlying invariant, reducing redundant operations, and testing against extreme edge cases.`;
+    return `Core Mental Model: ${topicTitle} is a core foundational concept in software problem solving. Focus on identifying the underlying invariant, avoiding redundant work, and testing against edge cases.`;
   }
 
   async generateHint(problemTitle: string, topicTitle: string): Promise<string> {

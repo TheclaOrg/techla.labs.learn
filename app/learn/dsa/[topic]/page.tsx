@@ -30,6 +30,7 @@ import { MasteryBadge } from "@/components/ui/MasteryBadge";
 import { ResourceCard } from "@/components/learning/ResourceCard";
 import { ProblemCard } from "@/components/learning/ProblemCard";
 import { TopicAssessmentModal } from "@/components/learning/TopicAssessmentModal";
+import { AITutorResponse } from "@/components/learning/AITutorResponse";
 import { UserTopicMastery, ProblemProgress } from "@/types/learning";
 import { aiProvider } from "@/lib/ai/provider";
 
@@ -292,8 +293,8 @@ export default function TopicDetailPage({ params }: TopicPageProps) {
               </div>
 
               {aiExplanation ? (
-                <div className="mt-4 rounded-xl border border-white/5 bg-black/40 p-4 text-xs leading-6 text-white/80 whitespace-pre-line font-sans">
-                  {aiExplanation}
+                <div className="mt-4">
+                  <AITutorResponse content={aiExplanation} />
                 </div>
               ) : (
                 <p className="mt-3 text-xs text-white/40">

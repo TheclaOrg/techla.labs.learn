@@ -31,6 +31,7 @@ import { MasteryBadge } from "@/components/ui/MasteryBadge";
 import { ResourceCard } from "@/components/learning/ResourceCard";
 import { ProblemCard } from "@/components/learning/ProblemCard";
 import { TopicAssessmentModal } from "@/components/learning/TopicAssessmentModal";
+import { AITutorResponse } from "@/components/learning/AITutorResponse";
 import { UserTopicMastery, ProblemProgress } from "@/types/learning";
 import { aiProvider } from "@/lib/ai/provider";
 
@@ -166,13 +167,11 @@ export default function CybersecurityTopicDetailPage({ params }: TopicPageProps)
         {/* AI Tutor Response Area */}
         {aiExplanation && (
           <div className="mt-6 rounded-2xl border border-[#ff6a00]/30 bg-[#0d0d0d] p-6 sm:p-8">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#ff8533] mb-3">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#ff8533] mb-4">
               <Sparkles size={14} />
               AI Conceptual Guide
             </div>
-            <div className="prose prose-invert max-w-none text-sm leading-7 text-white/80 whitespace-pre-line">
-              {aiExplanation}
-            </div>
+            <AITutorResponse content={aiExplanation} />
           </div>
         )}
 

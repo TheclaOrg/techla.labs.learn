@@ -63,27 +63,31 @@ export async function POST(req: NextRequest) {
     const systemPrompt =
       "You are an elite, world-class computer science and cybersecurity tutor for Techla.labs.learn. " +
       "Explain concepts with deep technical rigor, mental models, computational invariants, time/space complexity, and practical debugging intuition. " +
-      "Never mention your underlying AI model or system specifications. Focus entirely on clear, actionable educational value.";
+      "Formatting Rules: Do NOT use markdown symbols like ###, ##, #, **, ***, or bullet asterisks. Output clean section titles followed by clear paragraphs and clean bullet points without markdown markup. Never mention your model name or backend infrastructure.";
 
     if (action === "explanation") {
-      const userPrompt = `Provide a comprehensive, highly clear conceptual guide for the topic "${topicTitle}" (Target Learner Level: ${userLevel}).
-Structure your response cleanly in Markdown:
-1. **Core Mental Model & Invariant** (What is the core intuition? Why does it exist?)
-2. **Algorithm / System Mechanics** (Step-by-step breakdown of how it works)
-3. **Time & Space Complexity / Security Impact** (Exact Big-O or security posture analysis)
-4. **Key Edge Cases & Common Pitfalls** (Where do engineers make mistakes?)
-5. **Interview / Real-World Rule of Thumb** (When to pick this over alternatives)`;
+      const userPrompt = `Provide a comprehensive, clear conceptual breakdown for the topic "${topicTitle}" (Target Level: ${userLevel}).
+Structure the response into these exact clean sections:
+Core Mental Model: (State the fundamental intuition and purpose in 2 clear sentences)
+Key Invariants: (List the 3-5 core rules or structures, one per line)
+System Mechanics: (Explain step-by-step how it works)
+Time & Space Complexity: (Explain exact complexities or security implications)
+Common Pitfalls to Avoid: (List 3 critical bugs or misconceptions, one per line)
+Practical Rule of Thumb: (When to apply this in interviews or production)
+
+Do not include any asterisks (**) or hashes (###). Keep the text clean, direct, and readable.`;
 
       const text = await callOpenRouterWithFallback(systemPrompt, userPrompt);
       if (text) {
         return NextResponse.json({ success: true, text });
       }
     } else if (action === "hint") {
-      const userPrompt = `Give a strategic, non-spoiler architectural hint for the problem "${problemTitle}" in the topic "${topicTitle}".
+      const userPrompt = `Give a strategic, non-spoiler hint for the problem "${problemTitle}" in the topic "${topicTitle}".
 Provide:
 1. A guiding question to rethink the approach.
 2. An invariant observation about data structures or constraints.
-3. Next step without giving the full solution code away.`;
+3. Next step without giving full solution code.
+Do not use asterisks or hashes in your formatting.`;
 
       const text = await callOpenRouterWithFallback(systemPrompt, userPrompt);
       if (text) {
@@ -92,7 +96,7 @@ Provide:
     } else if (action === "evaluate") {
       const userPrompt = `A student answered the question: "${question}".
 Student's Answer: "${userAnswer}".
-Evaluate their technical understanding. State whether they grasped the fundamental concept, correct any misconceptions, and provide concise constructive feedback.`;
+Evaluate their technical understanding cleanly without markdown hashes or asterisks. State whether they grasped the fundamental concept, correct any misconceptions, and provide concise constructive feedback.`;
 
       const text = await callOpenRouterWithFallback(systemPrompt, userPrompt);
       if (text) {
