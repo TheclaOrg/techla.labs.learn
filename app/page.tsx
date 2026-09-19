@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -7,13 +8,19 @@ import {
   ChevronRight,
   Code2,
   GitBranch,
+  Shield,
   Sparkles,
   Target,
   Trophy,
   CheckCircle2,
+  Layers,
+  Zap,
+  Clock,
 } from "lucide-react";
 
 export default function HomePage() {
+  const [heroTrack, setHeroTrack] = useState<"dsa" | "cybersecurity">("dsa");
+
   return (
     <main className="min-h-screen overflow-hidden bg-[#050505]">
       {/* Background ambient lighting */}
@@ -29,7 +36,7 @@ export default function HomePage() {
           <div>
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#ff6a00]/25 bg-[#ff6a00]/10 px-3.5 py-1.5 text-xs font-semibold text-[#ff8533]">
               <Sparkles size={13} />
-              AI-POWERED LEARNING
+              ADAPTIVE GRAPH MASTERY
             </div>
 
             <h1 className="max-w-4xl text-5xl font-bold leading-[0.98] tracking-[-0.055em] sm:text-7xl lg:text-[80px]">
@@ -61,7 +68,7 @@ export default function HomePage() {
                 href="#paths"
                 className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-6 py-3.5 text-sm font-medium text-white transition hover:bg-white/[0.07]"
               >
-                Explore Paths
+                Explore Tracks
               </a>
             </div>
 
@@ -81,21 +88,36 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Product Preview Card */}
+          {/* Product Preview Card with Live Interactive Switcher */}
           <div className="relative">
             <div className="absolute -inset-10 rounded-full bg-[#ff6a00]/10 blur-[90px]" />
 
             <div className="orange-glow relative rounded-[28px] border border-white/10 bg-[#090909] p-3">
               <div className="rounded-[22px] border border-white/8 bg-[#0d0d0d] p-5">
-                {/* Fake browser top */}
+                {/* Browser top with Track Switcher */}
                 <div className="mb-5 flex items-center justify-between">
                   <div className="flex gap-1.5">
                     <div className="size-2.5 rounded-full bg-white/15" />
                     <div className="size-2.5 rounded-full bg-white/15" />
                     <div className="size-2.5 rounded-full bg-white/15" />
                   </div>
-                  <div className="rounded-full border border-white/5 bg-black/40 px-3 py-1 text-[9px] font-mono text-white/30">
-                    app.techla.labs/learn/dsa
+                  <div className="flex items-center gap-1.5 bg-black/60 border border-white/10 rounded-full p-1 text-[10px]">
+                    <button
+                      onClick={() => setHeroTrack("dsa")}
+                      className={`px-2.5 py-0.5 rounded-full font-semibold transition ${
+                        heroTrack === "dsa" ? "bg-[#ff6a00] text-black" : "text-white/40 hover:text-white"
+                      }`}
+                    >
+                      DSA (44 Nodes)
+                    </button>
+                    <button
+                      onClick={() => setHeroTrack("cybersecurity")}
+                      className={`px-2.5 py-0.5 rounded-full font-semibold transition ${
+                        heroTrack === "cybersecurity" ? "bg-[#ff6a00] text-black" : "text-white/40 hover:text-white"
+                      }`}
+                    >
+                      Cyber (36 Nodes)
+                    </button>
                   </div>
                 </div>
 
@@ -108,9 +130,9 @@ export default function HomePage() {
 
                     {[
                       "Dashboard",
-                      "My Path",
-                      "Practice",
-                      "Progress",
+                      "Knowledge Graph",
+                      "Practice Labs",
+                      "Diagnostic",
                     ].map((item, i) => (
                       <div
                         key={item}
@@ -127,45 +149,91 @@ export default function HomePage() {
 
                   {/* Path Preview Body */}
                   <div>
-                    <div className="mb-4">
-                      <p className="text-[9px] uppercase tracking-[0.18em] text-[#ff6a00] font-semibold">
-                        Your Learning Path
-                      </p>
-                      <div className="mt-1 flex items-center justify-between">
-                        <h3 className="text-sm font-semibold text-white">
-                          Data Structures & Algorithms
-                        </h3>
-                        <span className="text-[11px] font-mono font-bold text-[#ff8533]">
-                          42%
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="mb-4 h-1 overflow-hidden rounded-full bg-white/5">
-                      <div className="h-full w-[42%] rounded-full bg-[#ff6a00]" />
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <PathItem number="01" title="Arrays & Pointers" status="Mastered" complete />
-                      <PathItem number="02" title="Hash Tables" status="Mastered" complete />
-                      <PathItem number="03" title="Binary Search" status="Next In Path" active />
-                      <PathItem number="04" title="Binary Trees" status="Locked" />
-                      <PathItem number="05" title="Graph BFS/DFS" status="Locked" />
-                    </div>
-
-                    <div className="mt-3.5 rounded-xl border border-[#ff6a00]/20 bg-[#ff6a00]/5 p-3">
-                      <div className="flex gap-2">
-                        <BrainCircuit size={14} className="mt-0.5 shrink-0 text-[#ff6a00]" />
-                        <div>
-                          <p className="text-[10px] font-semibold text-white">
-                            Why this next?
+                    {heroTrack === "dsa" ? (
+                      <div>
+                        <div className="mb-4">
+                          <p className="text-[9px] uppercase tracking-[0.18em] text-[#ff6a00] font-semibold">
+                            Adaptive DSA Graph
                           </p>
-                          <p className="mt-0.5 text-[9px] leading-3.5 text-white/45">
-                            You mastered Arrays and Hashing. Binary search is the next prerequisite in your graph before advanced search problems.
-                          </p>
+                          <div className="mt-1 flex items-center justify-between">
+                            <h3 className="text-sm font-semibold text-white">
+                              Data Structures & Algorithms
+                            </h3>
+                            <span className="text-[11px] font-mono font-bold text-[#ff8533]">
+                              44 Nodes · 13 Cats
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mb-4 h-1 overflow-hidden rounded-full bg-white/5">
+                          <div className="h-full w-[45%] rounded-full bg-[#ff6a00]" />
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <PathItem number="01" title="Programming Fundamentals" status="Mastered" complete />
+                          <PathItem number="02" title="Big-O & Hash Tables" status="Mastered" complete />
+                          <PathItem number="03" title="Binary Search" status="Next In Graph" active />
+                          <PathItem number="04" title="Binary Trees & BST" status="Ready to Unlock" />
+                          <PathItem number="05" title="Graph BFS/DFS & DP" status="Locked" />
+                        </div>
+
+                        <div className="mt-3.5 rounded-xl border border-[#ff6a00]/20 bg-[#ff6a00]/5 p-3">
+                          <div className="flex gap-2">
+                            <BrainCircuit size={14} className="mt-0.5 shrink-0 text-[#ff6a00]" />
+                            <div>
+                              <p className="text-[10px] font-semibold text-white">
+                                Why Binary Search next?
+                              </p>
+                              <p className="mt-0.5 text-[9px] leading-3.5 text-white/45">
+                                Mastered Arrays and Hashing. Binary Search is the required prerequisite before advanced range searches and tree traversals.
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div>
+                        <div className="mb-4">
+                          <p className="text-[9px] uppercase tracking-[0.18em] text-[#ff6a00] font-semibold">
+                            Adaptive Cyber Graph
+                          </p>
+                          <div className="mt-1 flex items-center justify-between">
+                            <h3 className="text-sm font-semibold text-white">
+                              Cybersecurity Engineering
+                            </h3>
+                            <span className="text-[11px] font-mono font-bold text-[#ff8533]">
+                              36 Nodes · 12 Modules
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mb-4 h-1 overflow-hidden rounded-full bg-white/5">
+                          <div className="h-full w-[38%] rounded-full bg-[#ff6a00]" />
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <PathItem number="01" title="IT & Networking Foundations" status="Mastered" complete />
+                          <PathItem number="02" title="Linux CLI & User Permissions" status="Mastered" complete />
+                          <PathItem number="03" title="Nmap & Packet Recon" status="Next In Graph" active />
+                          <PathItem number="04" title="Web Exploitation (SQLi/XSS)" status="Ready to Unlock" />
+                          <PathItem number="05" title="SOC Log Analysis & Incident Response" status="Locked" />
+                        </div>
+
+                        <div className="mt-3.5 rounded-xl border border-[#ff6a00]/20 bg-[#ff6a00]/5 p-3">
+                          <div className="flex gap-2">
+                            <Shield size={14} className="mt-0.5 shrink-0 text-[#ff6a00]" />
+                            <div>
+                              <p className="text-[10px] font-semibold text-white">
+                                Why Nmap & Recon next?
+                              </p>
+                              <p className="mt-0.5 text-[9px] leading-3.5 text-white/45">
+                                Mastered Linux fundamentals and TCP/IP stack. Port scanning & packet inspection form the bedrock for SOC defense and vulnerability testing.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -174,8 +242,72 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* LIVE PLATFORM & TRACK INTELLIGENCE SECTION */}
+      <section className="border-y border-white/[0.07] bg-[#080808] py-20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#ff6a00]/20 bg-[#ff6a00]/5 px-3 py-1 text-xs font-semibold text-[#ff8533] mb-3">
+              <Zap size={13} />
+              PRODUCTION-GRADE CURRICULA
+            </div>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-5xl text-white">
+              Built for serious engineers & security practitioners.
+            </h2>
+            <p className="mt-3 text-sm sm:text-base text-white/45">
+              Live statistics and curated graph depth across both active learning tracks.
+            </p>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="card rounded-2xl p-6 border-white/[0.08] bg-[#0d0d0d]">
+              <div className="grid size-10 place-items-center rounded-xl bg-[#ff6a00]/10 text-[#ff6a00]">
+                <Code2 size={20} />
+              </div>
+              <p className="mt-5 text-3xl font-bold font-mono text-white">44 Nodes</p>
+              <h3 className="mt-1 text-sm font-semibold text-white">Data Structures & Algorithms</h3>
+              <p className="mt-2 text-xs text-white/40 leading-relaxed">
+                13 computational categories from two-pointers and heaps to dynamic programming and advanced graph cuts.
+              </p>
+            </div>
+
+            <div className="card rounded-2xl p-6 border-white/[0.08] bg-[#0d0d0d]">
+              <div className="grid size-10 place-items-center rounded-xl bg-amber-500/10 text-amber-400">
+                <Shield size={20} />
+              </div>
+              <p className="mt-5 text-3xl font-bold font-mono text-white">36 Nodes</p>
+              <h3 className="mt-1 text-sm font-semibold text-white">Cybersecurity Engineering</h3>
+              <p className="mt-2 text-xs text-white/40 leading-relaxed">
+                12 defensive & offensive modules mapped to MITRE ATT&CK, OWASP Top 10, and Tier-1 SOC operations.
+              </p>
+            </div>
+
+            <div className="card rounded-2xl p-6 border-white/[0.08] bg-[#0d0d0d]">
+              <div className="grid size-10 place-items-center rounded-xl bg-emerald-500/10 text-emerald-400">
+                <Trophy size={20} />
+              </div>
+              <p className="mt-5 text-3xl font-bold font-mono text-white">275+ Labs</p>
+              <h3 className="mt-1 text-sm font-semibold text-white">Curated Practice & VMs</h3>
+              <p className="mt-2 text-xs text-white/40 leading-relaxed">
+                Direct integration with LeetCode problem patterns, TryHackMe virtual machines, PortSwigger, and OverTheWire.
+              </p>
+            </div>
+
+            <div className="card rounded-2xl p-6 border-white/[0.08] bg-[#0d0d0d]">
+              <div className="grid size-10 place-items-center rounded-xl bg-blue-500/10 text-blue-400">
+                <Target size={20} />
+              </div>
+              <p className="mt-5 text-3xl font-bold font-mono text-white">20 Marks</p>
+              <h3 className="mt-1 text-sm font-semibold text-white">Adaptive Concept Diagnostic</h3>
+              <p className="mt-2 text-xs text-white/40 leading-relaxed">
+                Instant gap evaluation to bypass known concepts and calibrate your personalized prerequisite roadmap.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* HOW IT WORKS SECTION */}
-      <section id="how" className="mx-auto max-w-7xl px-5 pb-28 lg:px-8">
+      <section id="how" className="mx-auto max-w-7xl px-5 py-28 lg:px-8">
         <div className="mb-12">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#ff6a00]">
             The Architecture
@@ -190,7 +322,7 @@ export default function HomePage() {
             icon={<Target size={22} />}
             number="01"
             title="Assess"
-            text="Take our 50+ question concept diagnostic to evaluate what you actually understand per topic instead of a generic single score."
+            text="Take our 20-mark concept diagnostic to evaluate what you actually understand per topic instead of a generic single score."
           />
           <FeatureCard
             icon={<GitBranch size={22} />}
@@ -202,7 +334,7 @@ export default function HomePage() {
             icon={<Trophy size={22} />}
             number="03"
             title="Master"
-            text="Pair conceptual theory with free curated resources, solve real LeetCode problems, and prove mastery with check-ins."
+            text="Pair conceptual theory with free curated resources, solve real LeetCode and TryHackMe labs, and prove mastery with check-ins."
           />
         </div>
       </section>
@@ -238,7 +370,7 @@ export default function HomePage() {
               available
             />
             <TrackCard
-              icon={<BrainCircuit size={22} />}
+              icon={<Shield size={22} />}
               title="Cybersecurity Engineering"
               description="Master defensive security across networking, Linux/Windows internals, web security (OWASP), and hands-on SOC operations."
               href="/learn/cybersecurity"

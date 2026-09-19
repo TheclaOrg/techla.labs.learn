@@ -24,6 +24,7 @@ import {
 } from "@/lib/storage/progress-store";
 import { computeOverallMasteryPercentage } from "@/lib/mastery/mastery-engine";
 import { generatePersonalizedPath } from "@/lib/learning/personalized-path";
+import { computeTrackAnalytics } from "@/lib/learning/track-analytics";
 import { dsaTopics } from "@/data/dsa/topics";
 import { cyberTopics } from "@/data/cybersecurity/topics";
 import { DashboardStat } from "@/components/dashboard/DashboardStat";
@@ -54,7 +55,7 @@ export default function DashboardPage() {
   const currentMasteries = isCyber ? cyberMasteries : dsaMasteries;
   const currentTopics = isCyber ? cyberTopics : dsaTopics;
 
-  const stats = computeOverallMasteryPercentage(currentMasteries, currentTopics);
+  const analytics = computeTrackAnalytics(activeDomain, currentMasteries, problemProgress);
   const personalized = generatePersonalizedPath(currentMasteries, activeDomain);
   const currentTopic = personalized.currentTopic;
   const recommendedNext =
@@ -210,29 +211,108 @@ export default function DashboardPage() {
           <DashboardStat
             icon={<Target size={20} />}
             title="Curriculum Mastery"
-            value={`${stats.percentage}%`}
-            subtitle={`Calculated across ${currentTopics.length} nodes`}
+            value={`${analytics.overallMasteryPercentage}%`}
+            subtitle={`/ ${analytics.totalNodes} Nodes`}
+            badge={analytics.readinessTier.name}
+            badgeClassName={analytics.readinessTier.badgeBg}
+            progressBar={{ percentage: analytics.overallMasteryPercentage }}
+            footer={
+              <div className="flex items-center justify-between text-[11px] text-white/40">
+                <span>{analytics.masteredCount + analytics.proficientCount} Cleared</span>
+                <span>{analytics.availableCount} Ready to Learn</span>
+              </div>
+            }
           />
           <DashboardStat
             icon={<Layers3 size={20} />}
             title="Nodes Mastered"
-            value={stats.masteredCount}
-            subtitle={`${stats.proficientCount} proficient`}
-            badge="Evidence Based"
+            value={analytics.masteredCount}
+            subtitle="Mastered (Lvl 5)"
+            badge="Graph Engine"
+            footer={
+              <div className="grid grid-cols-3 gap-1 text-center text-[10px] text-white/40">
+                <div><span className="text-white font-bold">{analytics.proficientCount}</span> Prof.</div>
+                <div><span className="text-white font-bold">{analytics.learningCount}</span> Learn</div>
+                <div><span className="text-white/50 font-bold">{analytics.lockedCount}</span> Lock</div>
+              </div>
+            }
           />
           <DashboardStat
             icon={<Trophy size={20} />}
-            title="Completed Practice"
-            value={solvedProblemsCount}
-            subtitle="Labs & Challenges"
+            title={isCyber ? "Security Labs Solved" : "LeetCode Problems Solved"}
+            value={analytics.solvedProblemsCount}
+            subtitle={`/ ${analytics.totalProblemsCount} Curated`}
+            badge={`${analytics.problemsPercentage}% Solved`}
+            badgeClassName="bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
+            progressBar={{ percentage: analytics.problemsPercentage, color: "bg-emerald-500" }}
+            footer={
+              <div className="flex items-center justify-between text-[11px] text-white/40">
+                <span>{isCyber ? "TryHackMe / PortSwigger" : "LeetCode Curated"}</span>
+                <span className="text-white/60">{analytics.totalProblemsCount - analytics.solvedProblemsCount} Left</span>
+              </div>
+            }
           />
           <DashboardStat
             icon={<BrainCircuit size={20} />}
-            title="Next Step Unlocks"
-            value={personalized.recommendedTopics.length}
-            subtitle="Ready to learn"
-            badge="Available"
+            title="Curriculum Depth"
+            value={`~${analytics.totalEstimatedHours}h`}
+            subtitle="Total Syllabus"
+            badge="Syllabus Scope"
+            badgeClassName="bg-blue-500/10 border-blue-500/20 text-blue-400"
+            footer={
+              <div className="flex items-center justify-between text-[11px] text-white/40">
+                <span>{analytics.categories.length} Core Domains</span>
+                <span>~{Math.round(analytics.totalEstimatedMinutes / analytics.totalNodes)}m/node</span>
+              </div>
+            }
           />
+        </div>
+
+        {/* Category Breakdown Matrix */}
+        <div className="mt-6 rounded-2xl border border-white/[0.08] bg-[#0c0c0c] p-5 sm:p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <span className="text-[#ff6a00]">●</span>
+                {isCyber ? "Cybersecurity Domain Mastery" : "DSA Computational Category Mastery"}
+              </h3>
+              <p className="text-xs text-white/40 mt-0.5">
+                Real-time progress calculated across {analytics.categories.length} syllabus modules.
+              </p>
+            </div>
+            <Link
+              href={isCyber ? "/learn/cybersecurity" : "/learn/dsa"}
+              className="text-xs text-[#ff8533] hover:underline font-semibold"
+            >
+              View Full Graph →
+            </Link>
+          </div>
+
+          <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {analytics.categories.map((cat) => (
+              <div
+                key={cat.name}
+                className="rounded-xl border border-white/[0.05] bg-white/[0.02] p-3 hover:border-white/15 transition"
+              >
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-white truncate max-w-[130px]">{cat.name}</span>
+                  <span className="font-mono text-[10px] text-white/40">{cat.mastered + cat.proficient}/{cat.total}</span>
+                </div>
+                <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/5">
+                  <div
+                    className={`h-full rounded-full transition-all ${
+                      cat.percentage >= 80 ? "bg-[#ff6a00]" : cat.percentage > 0 ? "bg-amber-400" : "bg-transparent"
+                    }`}
+                    style={{ width: `${Math.max(4, cat.percentage)}%` }}
+                  />
+                </div>
+                <div className="mt-2 flex items-center justify-between text-[10px] text-white/40">
+                  <span className={cat.status === "Mastered" ? "text-[#ff8533]" : ""}>{cat.status}</span>
+                  <span className="font-mono">{cat.percentage}%</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* In-Progress & Recommended Actions */}

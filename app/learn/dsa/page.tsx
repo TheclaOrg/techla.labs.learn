@@ -9,14 +9,14 @@ import {
   Sparkles,
 } from "lucide-react";
 import { dsaTopics } from "@/data/dsa/topics";
-import { loadStoredMasteries } from "@/lib/storage/progress-store";
-import { computeOverallMasteryPercentage } from "@/lib/mastery/mastery-engine";
+import { loadStoredMasteries, loadProblemProgress } from "@/lib/storage/progress-store";
 import { generatePersonalizedPath } from "@/lib/learning/personalized-path";
-import { downloadRoadmapFile } from "@/lib/learning/export-roadmap";
+import { computeTrackAnalytics } from "@/lib/learning/track-analytics";
 import { KnowledgeGraph } from "@/components/learning/KnowledgeGraph";
 import { TopicCard } from "@/components/learning/TopicCard";
+import { TrackStatsHub } from "@/components/learning/TrackStatsHub";
 import { RoadmapPDFModal } from "@/components/learning/RoadmapPDFModal";
-import { UserTopicMastery, DSACategory } from "@/types/learning";
+import { UserTopicMastery, ProblemProgress, DSACategory } from "@/types/learning";
 
 const categoryOrder: DSACategory[] = [
   "Foundations",
@@ -35,12 +35,13 @@ const categoryOrder: DSACategory[] = [
 ];
 
 export default function DsaOverviewPage() {
-  const [masteries] = useState<Record<string, UserTopicMastery>>(() => loadStoredMasteries());
+  const [masteries] = useState<Record<string, UserTopicMastery>>(() => loadStoredMasteries("dsa"));
+  const [problemProgress] = useState<Record<string, ProblemProgress>>(() => loadProblemProgress());
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [showPdfModal, setShowPdfModal] = useState(false);
 
-  const stats = computeOverallMasteryPercentage(masteries);
-  const personalized = generatePersonalizedPath(masteries);
+  const analytics = computeTrackAnalytics("dsa", masteries, problemProgress);
+  const personalized = generatePersonalizedPath(masteries, "dsa");
   const nextTopic = personalized.currentTopic;
   const nextReason = personalized.reasoning[0]?.reason || "Recommended next based on your prerequisite tree.";
 
@@ -56,7 +57,7 @@ export default function DsaOverviewPage() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-[#ff6a00]/20 bg-[#ff6a00]/5 px-3 py-1 text-xs font-semibold text-[#ff8533] mb-4">
               <Sparkles size={12} />
-              DATA STRUCTURES & ALGORITHMS
+              DATA STRUCTURES & ALGORITHMS (44 NODES)
             </div>
 
             <h1 className="text-4xl font-bold tracking-[-.05em] sm:text-6xl text-white">
@@ -80,89 +81,59 @@ export default function DsaOverviewPage() {
               href="/learn/dsa/diagnostic"
               className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:border-[#ff6a00] hover:text-[#ff8533] transition"
             >
-              Take Diagnostic
+              Take 20-Mark Diagnostic
               <ArrowRight size={15} />
             </Link>
           </div>
         </div>
 
-        {/* Progress & Next Recommendation Summary */}
-        <div className="mt-10 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-          {/* Overall Stats Card */}
-          <div className="card rounded-2xl p-6 sm:p-7 flex flex-col justify-between">
-            <div>
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-white/40 font-semibold">
-                    Overall Curriculum Mastery
-                  </p>
-                  <p className="mt-2 text-4xl font-bold text-white font-mono">{stats.percentage}%</p>
-                </div>
-                <div className="flex gap-2 text-xs">
-                  <span className="rounded-full bg-[#ff6a00]/10 border border-[#ff6a00]/20 px-3 py-1 text-[#ff8533] font-semibold">
-                    {stats.masteredCount} Mastered
-                  </span>
-                  <span className="rounded-full bg-white/5 border border-white/10 px-3 py-1 text-white/60">
-                    {stats.learningCount} In Progress
-                  </span>
-                </div>
-              </div>
+        {/* Live Track Analytics Hub */}
+        <div className="mt-10">
+          <TrackStatsHub
+            analytics={analytics}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            diagnosticHref="/learn/dsa/diagnostic"
+          />
+        </div>
 
-              <div className="mt-6 h-2 overflow-hidden rounded-full bg-white/5">
-                <div
-                  className="h-full rounded-full bg-[#ff6a00] transition-all duration-700"
-                  style={{ width: `${stats.percentage}%` }}
-                />
-              </div>
-            </div>
-
-            <div className="mt-8 grid grid-cols-3 gap-3 border-t border-white/[0.05] pt-5 text-center">
-              <div>
-                <p className="text-[10px] uppercase text-white/30">Total Topics</p>
-                <p className="mt-1 text-lg font-bold text-white">{stats.totalTopics}</p>
-              </div>
-              <div>
-                <p className="text-[10px] uppercase text-white/30">Proficient</p>
-                <p className="mt-1 text-lg font-bold text-[#ff8533]">{stats.proficientCount}</p>
-              </div>
-              <div>
-                <p className="text-[10px] uppercase text-white/30">Ready To Unlock</p>
-                <p className="mt-1 text-lg font-bold text-white">{personalized.recommendedTopics.length}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Recommended Next Step */}
+        {/* Recommended Next Step & Knowledge Graph */}
+        <div className="mt-10">
           <div className="rounded-2xl border border-[#ff6a00]/30 bg-[#0d0d0d] p-6 sm:p-7 flex flex-col justify-between shadow-[0_0_50px_rgba(255,106,0,0.06)]">
             <div>
               <div className="flex items-center gap-2 text-[#ff6a00]">
                 <BrainCircuit size={20} />
                 <span className="text-[10px] uppercase font-bold tracking-widest">
-                  Recommended Next Step
+                  Active Adaptive Focus Node
                 </span>
               </div>
 
-              <h2 className="mt-3 text-2xl font-bold text-white">
-                {nextTopic?.title || "Binary Search"}
-              </h2>
+              <div className="mt-3 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+                <h2 className="text-2xl font-bold text-white">
+                  {nextTopic?.title || "Binary Search"}
+                </h2>
+                <span className="text-xs font-mono text-[#ff8533]">
+                  {nextTopic?.category} · {nextTopic?.estimatedMinutes || 60} mins
+                </span>
+              </div>
 
               <p className="mt-2 text-xs leading-5 text-white/50">
                 {nextTopic?.description}
               </p>
 
               <div className="mt-4 rounded-xl border border-[#ff6a00]/20 bg-[#ff6a00]/5 p-3 text-xs text-white/70">
-                <span className="font-semibold text-[#ff8533]">Why: </span>
+                <span className="font-semibold text-[#ff8533]">Graph Rationale: </span>
                 {nextReason}
               </div>
             </div>
 
             <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between">
-              <span className="text-xs text-white/40">{nextTopic?.estimatedMinutes || 60} mins</span>
+              <span className="text-xs text-white/40">Difficulty Level: {nextTopic?.difficulty || 1}/5</span>
               <Link
                 href={`/learn/dsa/${nextTopic?.slug || "binary-search"}`}
                 className="inline-flex items-center gap-2 rounded-full bg-[#ff6a00] px-5 py-2 text-xs font-bold text-black hover:bg-[#ff7a1a] transition"
               >
-                Continue Learning
+                Launch Learning Node
                 <ArrowRight size={13} />
               </Link>
             </div>
