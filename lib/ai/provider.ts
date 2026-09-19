@@ -1,25 +1,73 @@
 import { AIProvider } from "@/types/learning";
 import { topicsBySlug } from "@/lib/learning/graph";
 
-export class DeterministicAIProvider implements AIProvider {
+export class OpenRouterAIProvider implements AIProvider {
+  private async callTutorApi(payload: Record<string, unknown>): Promise<Record<string, unknown> | null> {
+    try {
+      const res = await fetch("/api/ai/tutor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch {
+      return null;
+    }
+  }
+
   async generateExplanation(topicTitle: string, userLevel: string): Promise<string> {
+    const data = await this.callTutorApi({
+      action: "explanation",
+      topicTitle,
+      userLevel,
+    });
+
+    if (data && data.success && typeof data.text === "string") {
+      return data.text;
+    }
+
+    // Deterministic fallback if offline or request fails
     const matchedSlug = Object.keys(topicsBySlug).find(
       (slug) => topicsBySlug[slug].title.toLowerCase() === topicTitle.toLowerCase()
     );
     const topic = matchedSlug ? topicsBySlug[matchedSlug] : null;
 
     if (topic) {
-      return `### Conceptual Breakdown: ${topic.title}\n\n**Core Mental Model:** ${topic.summary}\n\n**Key Invariants:**\n${topic.keyConcepts.map((k) => `- **${k}**`).join("\n")}\n\n**Common Pitfalls to Avoid:**\n${topic.commonMistakes.map((m) => `- ${m}`).join("\n")}\n\n*Tailored for ${userLevel} learner trajectory.*`;
+      return `### Conceptual Breakdown: ${topic.title}\n\n**Core Mental Model:** ${topic.summary}\n\n**Key Invariants:**\n${topic.keyConcepts.map((k) => `- **${k}**`).join("\n")}\n\n**Common Pitfalls to Avoid:**\n${topic.commonMistakes.map((m) => `- ${m}`).join("\n")}\n\n*Optimized for ${userLevel} learner trajectory.*`;
     }
 
-    return `### Understanding ${topicTitle}\n\n${topicTitle} is a foundational concept in algorithmic design. Focus on identifying the underlying invariant, reducing redundant operations, and testing against extreme edge cases (e.g. empty inputs, single elements, duplicates).`;
+    return `### Understanding ${topicTitle}\n\n${topicTitle} is a foundational concept in computational design. Focus on identifying the underlying invariant, reducing redundant operations, and testing against extreme edge cases.`;
   }
 
   async generateHint(problemTitle: string, topicTitle: string): Promise<string> {
+    const data = await this.callTutorApi({
+      action: "hint",
+      problemTitle,
+      topicTitle,
+    });
+
+    if (data && data.success && typeof data.text === "string") {
+      return data.text;
+    }
+
     return `💡 **Strategic Hint for "${problemTitle}" (${topicTitle})**:\n\n1. Consider the input constraints and what time complexity is acceptable.\n2. Ask yourself: Can an auxiliary data structure (e.g., Hash Map, Monotonic Stack, or Two Pointers) eliminate the inner nested loop?\n3. Trace the algorithm with a small sample input on paper before writing code.`;
   }
 
   async evaluateAnswer(question: string, userAnswer: string): Promise<{ isCorrect: boolean; feedback: string }> {
+    const data = await this.callTutorApi({
+      action: "evaluate",
+      question,
+      userAnswer,
+    });
+
+    if (data && data.success && typeof data.feedback === "string") {
+      return {
+        isCorrect: Boolean(data.isCorrect),
+        feedback: data.feedback,
+      };
+    }
+
     const isAdequate = userAnswer.trim().length > 15;
     return {
       isCorrect: isAdequate,
@@ -31,4 +79,4 @@ export class DeterministicAIProvider implements AIProvider {
 }
 
 // Singleton export
-export const aiProvider: AIProvider = new DeterministicAIProvider();
+export const aiProvider: AIProvider = new OpenRouterAIProvider();
