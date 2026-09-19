@@ -62,29 +62,64 @@ export function RoadmapPDFModal({ domain, isOpen, onClose }: RoadmapPDFModalProp
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-2 sm:p-6 backdrop-blur-xl overflow-y-auto">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center bg-black/95 pt-8 sm:pt-12 pb-12 px-2 sm:px-6 backdrop-blur-2xl overflow-y-auto print:static print:inset-auto print:bg-[#050505] print:p-0 print:pt-8 print:overflow-visible print:block">
+      
+      {/* Explicit Print Dark Mode & Page Configuration Stylesheet */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @media print {
+            @page {
+              margin: 12mm 10mm 15mm 10mm;
+              size: portrait;
+              background-color: #050505;
+            }
+            html, body {
+              background-color: #050505 !important;
+              color: #ffffff !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+              color-adjust: exact !important;
+            }
+            * {
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+              color-adjust: exact !important;
+            }
+            .no-print {
+              display: none !important;
+            }
+            .pdf-card, .pdf-topic-node {
+              break-inside: avoid !important;
+              page-break-inside: avoid !important;
+            }
+          }
+        `
+      }} />
+
       {/* Control Toolbar (Hidden during Print) */}
-      <div className="fixed top-4 right-4 z-[110] flex items-center gap-3 print:hidden">
+      <div className="fixed top-4 right-4 z-[110] flex items-center gap-3 print:hidden no-print">
         <button
           onClick={handlePrint}
-          className="flex items-center gap-2 rounded-full bg-[#ff6a00] px-6 py-2.5 text-xs font-bold text-black shadow-[0_0_25px_rgba(255,106,0,0.4)] hover:bg-[#ff7a1a] transition"
+          className="flex items-center gap-2 rounded-full bg-[#ff6a00] px-6 py-2.5 text-xs font-bold text-black shadow-[0_0_25px_rgba(255,106,0,0.5)] hover:bg-[#ff7a1a] transition cursor-pointer"
         >
           <Printer size={15} />
           Save as PDF / Print
         </button>
         <button
           onClick={onClose}
-          className="grid size-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 transition"
+          className="grid size-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 transition cursor-pointer"
         >
           <X size={18} />
         </button>
       </div>
 
       {/* Main Printable Document Container */}
-      <div className="relative my-auto w-full max-w-4xl rounded-3xl border border-white/10 bg-[#070707] p-6 sm:p-12 shadow-[0_0_100px_rgba(0,0,0,0.9)] print:m-0 print:w-full print:max-w-none print:border-none print:bg-black print:p-6 text-white font-sans">
+      <div className="relative w-full max-w-4xl rounded-3xl border border-white/10 bg-[#050505] p-6 sm:p-12 pt-8 sm:pt-14 shadow-[0_0_120px_rgba(0,0,0,0.95)] print:m-0 print:w-full print:max-w-none print:border-none print:bg-[#050505] print:p-6 print:pt-10 text-white font-sans">
         
         {/* Name input (screen only) */}
-        <div className="mb-6 rounded-2xl border border-[#ff6a00]/30 bg-[#0e0e0e] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 print:hidden">
+        <div className="mb-6 rounded-2xl border border-[#ff6a00]/30 bg-[#0e0e0e] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 print:hidden no-print">
           <div className="flex items-center gap-2 text-xs text-white/60">
             <span className="font-semibold text-[#ff8533]">Personalize Name:</span>
             <input
@@ -92,16 +127,16 @@ export function RoadmapPDFModal({ domain, isOpen, onClose }: RoadmapPDFModalProp
               value={learnerName}
               onChange={(e) => setLearnerName(e.target.value)}
               placeholder="Your Name / Handle"
-              className="rounded-lg border border-white/15 bg-black/60 px-3 py-1 text-xs text-white placeholder-white/30 focus:border-[#ff6a00] focus:outline-none"
+              className="rounded-lg border border-white/15 bg-black/80 px-3 py-1 text-xs text-white placeholder-white/30 focus:border-[#ff6a00] focus:outline-none"
             />
           </div>
           <p className="text-[11px] text-white/40">
-            Click <strong>Save as PDF / Print</strong> and select &quot;Save as PDF&quot; in destination.
+            Click <strong>Save as PDF / Print</strong> and choose &quot;Save as PDF&quot; with background graphics enabled.
           </p>
         </div>
 
         {/* ==================== PDF HEADER BANNER ==================== */}
-        <div className="relative rounded-3xl border border-[#ff6a00]/30 bg-gradient-to-br from-[#120a02] via-[#090909] to-[#050505] p-6 sm:p-10 overflow-hidden shadow-[0_0_60px_rgba(255,106,0,0.12)]">
+        <div className="pdf-card relative rounded-3xl border border-[#ff6a00]/30 bg-gradient-to-br from-[#150a02] via-[#090909] to-[#040404] p-6 sm:p-10 overflow-hidden shadow-[0_0_60px_rgba(255,106,0,0.12)]">
           <div className="absolute top-0 right-0 w-80 h-80 bg-[#ff6a00]/10 rounded-full blur-[100px] pointer-events-none" />
 
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
@@ -260,7 +295,7 @@ export function RoadmapPDFModal({ domain, isOpen, onClose }: RoadmapPDFModalProp
               return (
                 <div
                   key={topic.slug}
-                  className="rounded-xl border border-white/[0.06] bg-[#0c0c0c] p-4 flex flex-col justify-between gap-3 text-xs"
+                  className="pdf-topic-node rounded-xl border border-white/[0.08] bg-[#0c0c0c] p-4 flex flex-col justify-between gap-3 text-xs"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex items-start gap-3.5">
@@ -338,7 +373,7 @@ export function RoadmapPDFModal({ domain, isOpen, onClose }: RoadmapPDFModalProp
         </div>
 
         {/* ==================== CURATED FREE LEARNING RESOURCES DIRECTORY ==================== */}
-        <div className="mt-10 rounded-2xl border border-[#ff6a00]/30 bg-[#0a0a0a] p-6 sm:p-8">
+        <div className="pdf-card mt-10 rounded-2xl border border-[#ff6a00]/30 bg-[#0a0a0a] p-6 sm:p-8">
           <div className="flex items-center justify-between border-b border-white/[0.08] pb-3 mb-4">
             <div className="flex items-center gap-2 text-[#ff8533]">
               <Globe size={16} />
