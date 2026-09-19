@@ -1,4 +1,4 @@
-import { MasteryLevel, UserTopicMastery } from "@/types/learning";
+import { MasteryLevel, UserTopicMastery, Topic } from "@/types/learning";
 import { dsaTopics } from "@/data/dsa/topics";
 
 export function calculateMasteryFromSignals(params: {
@@ -29,7 +29,7 @@ export function calculateMasteryFromSignals(params: {
     signalsCount++;
   }
 
-  // Bonus for solving practice problems on LeetCode
+  // Bonus for solving practice problems / labs
   if (problemsSolvedCount > 0) {
     const practiceBonus = Math.min(100, problemsSolvedCount * 35);
     computedScore += practiceBonus;
@@ -68,7 +68,8 @@ export function calculateMasteryFromSignals(params: {
 }
 
 export function computeOverallMasteryPercentage(
-  masteries: Record<string, UserTopicMastery> = {}
+  masteries: Record<string, UserTopicMastery> = {},
+  topicsList: Topic[] = dsaTopics
 ): {
   percentage: number;
   masteredCount: number;
@@ -76,7 +77,7 @@ export function computeOverallMasteryPercentage(
   learningCount: number;
   totalTopics: number;
 } {
-  const totalTopics = dsaTopics.length;
+  const totalTopics = topicsList.length;
   if (totalTopics === 0) {
     return { percentage: 0, masteredCount: 0, proficientCount: 0, learningCount: 0, totalTopics: 0 };
   }
@@ -86,7 +87,7 @@ export function computeOverallMasteryPercentage(
   let proficientCount = 0;
   let learningCount = 0;
 
-  for (const topic of dsaTopics) {
+  for (const topic of topicsList) {
     const mastery = masteries[topic.slug]?.masteryLevel ?? 0;
     totalPoints += mastery; // max 5 points per topic
     if (mastery >= 5) {

@@ -1,13 +1,20 @@
 import { DiagnosticQuestion, DiagnosticResult, UserTopicMastery } from "@/types/learning";
 import { dsaDiagnosticQuestions } from "@/data/dsa/questions";
+import { cyberDiagnosticQuestions } from "@/data/cybersecurity/questions";
 import { dsaTopics } from "@/data/dsa/topics";
+import { cyberTopics } from "@/data/cybersecurity/topics";
 import { calculateMasteryFromSignals } from "@/lib/mastery/mastery-engine";
 import { generatePersonalizedPath } from "@/lib/learning/personalized-path";
 
 export function scoreDiagnosticAssessment(
   userAnswers: Record<string, number>, // questionId -> chosen answer index
-  questions: DiagnosticQuestion[] = dsaDiagnosticQuestions
+  domain: "dsa" | "cybersecurity" = "dsa",
+  customQuestions?: DiagnosticQuestion[]
 ): DiagnosticResult {
+  const questions =
+    customQuestions || (domain === "cybersecurity" ? cyberDiagnosticQuestions : dsaDiagnosticQuestions);
+  const topics = domain === "cybersecurity" ? cyberTopics : dsaTopics;
+
   const totalQuestions = questions.length;
   let totalCorrect = 0;
 
@@ -57,7 +64,7 @@ export function scoreDiagnosticAssessment(
   let developingCount = 0;
   let needsAttentionCount = 0;
 
-  for (const topic of dsaTopics) {
+  for (const topic of topics) {
     const stat = topicMap[topic.slug];
     const score = stat ? Math.round((stat.correct / stat.total) * 100) : 0;
     const { level, confidence } = calculateMasteryFromSignals({
@@ -78,6 +85,7 @@ export function scoreDiagnosticAssessment(
     }
 
     topicMasteries[topic.slug] = {
+      domain,
       topicSlug: topic.slug,
       masteryLevel: level,
       score,
@@ -89,12 +97,13 @@ export function scoreDiagnosticAssessment(
   }
 
   // Generate personalized path using the newly calculated masteries
-  const personalized = generatePersonalizedPath(topicMasteries);
+  const personalized = generatePersonalizedPath(topicMasteries, domain);
   const recommendedPath = personalized.recommendedTopics.map((t) => t.slug);
 
   const percentage = Math.round((totalCorrect / (totalQuestions || 1)) * 100);
 
   return {
+    domain,
     totalQuestions,
     score: totalCorrect,
     percentage,

@@ -1,22 +1,30 @@
 import { Topic, UserTopicMastery } from "@/types/learning";
 import { dsaTopics } from "@/data/dsa/topics";
+import { cyberTopics } from "@/data/cybersecurity/topics";
 
 export const MASTERY_THRESHOLD_PROFICIENT = 4; // Unlocks downstream topics
 export const MASTERY_THRESHOLD_LEARNING = 2; // Considered developing
 
-// Fast lookup map by slug
-export const topicsBySlug: Record<string, Topic> = dsaTopics.reduce((acc, topic) => {
+export function getTopicsForDomain(domain: "dsa" | "cybersecurity" = "dsa"): Topic[] {
+  return domain === "cybersecurity" ? cyberTopics : dsaTopics;
+}
+
+export const allTopics: Topic[] = [...dsaTopics, ...cyberTopics];
+
+// Fast lookup map by slug across all domains
+export const topicsBySlug: Record<string, Topic> = allTopics.reduce((acc, topic) => {
   acc[topic.slug] = topic;
   return acc;
 }, {} as Record<string, Topic>);
 
 // Graph adjacency: topic -> array of topics that depend on this topic
-export function buildForwardGraph(): Record<string, string[]> {
+export function buildForwardGraph(domain: "dsa" | "cybersecurity" = "dsa"): Record<string, string[]> {
+  const topics = getTopicsForDomain(domain);
   const forward: Record<string, string[]> = {};
-  dsaTopics.forEach((t) => {
+  topics.forEach((t) => {
     forward[t.slug] = [];
   });
-  dsaTopics.forEach((t) => {
+  topics.forEach((t) => {
     t.prerequisites.forEach((prereq) => {
       if (forward[prereq]) {
         forward[prereq].push(t.slug);
@@ -72,7 +80,6 @@ export function findDeepestUnmetPrerequisite(
   for (const prereqSlug of topic.prerequisites) {
     const prereqMastery = userMasteries[prereqSlug]?.masteryLevel ?? 0;
     if (prereqMastery < threshold) {
-      // Check if this prereq itself has missing prereqs
       const deeper = findDeepestUnmetPrerequisite(prereqSlug, userMasteries, threshold, visited);
       return deeper || prereqSlug;
     }
@@ -81,17 +88,18 @@ export function findDeepestUnmetPrerequisite(
   return null;
 }
 
-// Topological sort of topics
-export function getTopologicalOrder(): Topic[] {
+// Topological sort of topics for a given domain
+export function getTopologicalOrder(domain: "dsa" | "cybersecurity" = "dsa"): Topic[] {
+  const topics = getTopicsForDomain(domain);
   const inDegree: Record<string, number> = {};
-  const forward = buildForwardGraph();
+  const forward = buildForwardGraph(domain);
 
-  dsaTopics.forEach((t) => {
+  topics.forEach((t) => {
     inDegree[t.slug] = t.prerequisites.length;
   });
 
   const queue: string[] = [];
-  dsaTopics.forEach((t) => {
+  topics.forEach((t) => {
     if (inDegree[t.slug] === 0) {
       queue.push(t.slug);
     }
@@ -107,6 +115,16 @@ export function getTopologicalOrder(): Topic[] {
       inDegree[next]--;
       if (inDegree[next] === 0) {
         queue.push(next);
+      }
+    }
+  }
+
+  // Safety fallback if any cyclical dependencies exist (preserve all remaining topics)
+  if (ordered.length < topics.length) {
+    const orderedSlugs = new Set(ordered.map((t) => t.slug));
+    for (const t of topics) {
+      if (!orderedSlugs.has(t.slug)) {
+        ordered.push(t);
       }
     }
   }

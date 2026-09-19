@@ -3,9 +3,10 @@ import { topicsBySlug, arePrerequisitesMet, getTopologicalOrder, MASTERY_THRESHO
 
 export function generatePersonalizedPath(
   userMasteries: Record<string, UserTopicMastery> = {},
+  domain: "dsa" | "cybersecurity" = "dsa",
   threshold: number = MASTERY_THRESHOLD_PROFICIENT
 ): PersonalizedPathResult {
-  const topoTopics = getTopologicalOrder();
+  const topoTopics = getTopologicalOrder(domain);
 
   const completedTopics: Topic[] = [];
   const inProgressTopics: Topic[] = [];
@@ -47,12 +48,12 @@ export function generatePersonalizedPath(
     let reason = "";
     if (index === 0) {
       if (mastery > 0) {
-        reason = `You are actively developing mastery in ${topic.title} (Level ${mastery}/5). Completing this will solidify foundational skills.`;
+        reason = `You are actively developing mastery in ${topic.title} (Level ${mastery}/5). Completing this will solidify your foundation.`;
       } else if (metPrereqs.length > 0) {
         const metTitles = metPrereqs.map((slug) => topicsBySlug[slug]?.title || slug).join(" and ");
-        reason = `You have mastered ${metTitles}. ${topic.title} is the next natural step in your learning path.`;
+        reason = `You have mastered ${metTitles}. ${topic.title} is the next step in your curriculum.`;
       } else {
-        reason = `${topic.title} is a core starting topic for your journey into computational problem-solving.`;
+        reason = `${topic.title} is a core foundational topic for your ${domain === "cybersecurity" ? "cybersecurity" : "DSA"} journey.`;
       }
     } else {
       if (metPrereqs.length > 0) {
